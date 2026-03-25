@@ -1,0 +1,24 @@
+/* 
+Componente a nivel de ruta que va a checkear si el usuario tiene o no session iniciada
+En caso de no tener, redirecciona a login
+En caso de tener, deja pasar al home
+*/
+
+import React, { useContext } from 'react'
+import { AuthContext } from '../Context/AuthContext'
+import { Navigate, Outlet } from 'react-router'
+
+const AuthMiddleware = () => {
+  const { isLogged } = useContext(AuthContext)
+    return (
+    <>
+      {
+        isLogged 
+        ? <Outlet />
+        : <Navigate to = {'/login'}/> 
+      } 
+    </>
+  )
+}
+
+export default AuthMiddleware
