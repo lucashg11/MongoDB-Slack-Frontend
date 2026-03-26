@@ -12,6 +12,6 @@ export async function getWorkspace() {
     })
 
     const res_json = await res_http.json()
-    console.log(res_json);
+    //console.log(res_json);
     return res_json
 }

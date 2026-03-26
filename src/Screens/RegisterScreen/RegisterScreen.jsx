@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router'
 import useForm from '../../hooks/useForm'
 import useRequest from '../../hooks/useRequest'
 import { register } from '../../services/authService'
+import Input from '../../Components/Input'
+import RegisterButton from '../../Components/RegisterButton'
 
 const RegisterScreen = () => {
     const {
@@ -68,45 +70,60 @@ const RegisterScreen = () => {
         [response]
     )
     return (
-        <div>
-            <h1>
-                Registrarse
-            </h1>
+        <div className='w-full h-screen bg-indigo-500 p-6 flex items-center justify-center'>
+            <div className='w-full flex flex-col bg-white rounded-xl shadow-xl p-6 md:flex-row md:max-w-4xl md:gap-8'>
+                <div className='flex flex-col gap-2 md:w-1/2'>
+                    <div className='w-full flex items-center gap-2'>
+                        <img className='w-8' src="slack-logo.png" alt="Logo de Slack" />
+                        <h1 className='text-2xl font-semibold '>Bienvenidos a Slack</h1>
+                    </div>
+                    <img className='w-[90%] mx-auto md:w-full' src="register.png" alt="Ilustracion de registro" />
+                </div>
+                <div className='w-full flex flex-col md:w-1/2'>
+                    <h1 className='text-2xl font-semibold mb-4'>
+                        Registrarse
+                    </h1>
+                    <form className='w-full flex flex-col gap-4 mb-10' onSubmit={onSubmit}>
+                        <div className='w-full flex flex-col'>
+                            <Input
+                                htmlFor="name"
+                                type="text"
+                                id="name"
+                                name={REGISTER_FORM_FIELDS.NAME}
+                                onChange={handleChangeInput}
+                            />
+                        </div>
+                        <div className='w-full flex flex-col gap-2'>
+                            <Input
+                                htmlFor="email"
+                                type="email"
+                                id="email"
+                                name={REGISTER_FORM_FIELDS.EMAIL}
+                                onChange={handleChangeInput}
+                            />
+                        </div>
+                        <div className='w-full flex flex-col gap-2'>
+                            <Input
+                                htmlFor="password"
+                                type="password"
+                                id="password"
+                                name={REGISTER_FORM_FIELDS.PASSWORD}
+                                onChange={handleChangeInput}
+                                value={formState[REGISTER_FORM_FIELDS.PASSWORD]}
 
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label htmlFor="name">Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name={REGISTER_FORM_FIELDS.NAME}
-                        onChange={handleChangeInput}
-                        value={formState[REGISTER_FORM_FIELDS.NAME]}
-                    />
+                            />
+                        </div>
+                        <RegisterButton
+                            type="submit"
+                            text="Registrarse"
+                            disabled={loading}
+                            ariaLabel="Boton para registrarse"
+                            className="mt-10 bg-blue-400 text-white px-8 py-2 rounded-full cursor-pointer"
+                        />
+                    </form>
+                    <span className='text-xs text-slate-600 inline-flex items-center gap-2'>Ya tienes una cuenta? <Link className='font-bold' to="/login">Iniciar sesion</Link></span>
                 </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name={REGISTER_FORM_FIELDS.EMAIL}
-                        onChange={handleChangeInput}
-                        value={formState[REGISTER_FORM_FIELDS.EMAIL]}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name={REGISTER_FORM_FIELDS.PASSWORD}
-                        onChange={handleChangeInput}
-                        value={formState[REGISTER_FORM_FIELDS.PASSWORD]}
-                    />
-                </div>
-                <button type="submit" disabled={loading}>Registrarse</button>
-            </form>
-            <span>Ya tienes una cuenta? <Link to="/login">Iniciar sesion</Link></span>
+            </div>
 
         </div>
     )

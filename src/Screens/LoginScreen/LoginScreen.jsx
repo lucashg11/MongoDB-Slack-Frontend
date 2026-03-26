@@ -4,6 +4,8 @@ import useForm from '../../hooks/useForm'
 import { login } from '../../services/authService'
 import useRequest from '../../hooks/useRequest'
 import { AuthContext } from '../../Context/AuthContext'
+import Input from '../../Components/Input.jsx'
+import LoginButton from '../../Components/LoginButton.jsx'
 
 const LoginScreen = () => {
 
@@ -50,14 +52,6 @@ const LoginScreen = () => {
         submitFn: onLogin //Funcion que se activa al enviar formulario
     })
 
-    console.log(
-        {
-            response,
-            error,
-            loading
-        }
-    )
-
     /* 
     La funcion se carga cada vez que cambie response
     */
@@ -74,35 +68,50 @@ const LoginScreen = () => {
 
 
     return (
-        <div>
-            <h1>
-                Iniciar sesion
-            </h1>
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name={LOGIN_FORM_FIELDS.EMAIL}
-                        onChange={handleChangeInput}
-                    />
+        <div className='w-full h-screen p-6  bg-indigo-500 flex items-center justify-center'>
+            <div className='w-full flex flex-col bg-white p-6 rounded-xl shadow-xl md:flex-row md:max-w-4xl md:gap-8'>
+                <div className='w-full flex flex-col gap-10 mb-10 md:w-1/2'>
+                    <div className='w-full flex items-center gap-2'>
+                        <img className='w-8' src="slack-logo.png" alt="Logo de Slack" />
+                        <h1 className='text-2xl font-semibold'>Bienvenido a Slack</h1>
+                    </div>
+                    <img className='w-[90%] mx-auto md:w-full' src="login-img.png" alt="Ilustracion de inicio de sesion" />
                 </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name={LOGIN_FORM_FIELDS.PASSWORD}
-                        onChange={handleChangeInput}
-                    />
+                <div className='w-full flex flex-col md:w-1/2'>
+                    <h1 className='text-2xl font-semibold mb-4'>
+                        Iniciar sesion
+                    </h1>
+                    <form onSubmit={onSubmit} className='w-full flex flex-col gap-4 mb-10'>
+                        <div className='flex flex-col gap-2'>
+                            <Input
+                                htmlFor="email"
+                                type="email"
+                                id="email"
+                                name={LOGIN_FORM_FIELDS.EMAIL}
+                                onChange={handleChangeInput}
+                            />
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <Input
+                                htmlFor="password"
+                                type="password"
+                                id="password"
+                                name={LOGIN_FORM_FIELDS.PASSWORD}
+                                onChange={handleChangeInput}
+                            />
+                        </div>
+                        <LoginButton
+                            type="submit"
+                            text="Iniciar sesion"
+                            ariaLabel="Boton para iniciar sesion"
+                            className="mt-10 bg-blue-400 text-white px-8 py-2 rounded-full cursor-pointer"
+                        />
+                    </form>
+                    <span className='text-xs text-slate-600 inline-flex items-center gap-2 mb-4'>No tienes una cuenta? <Link className='font-bold' to="/register">Registrarse</Link></span>
+                    <span className='text-xs text-slate-600 inline-flex items-center gap-2'>Olvidaste tu contraseña? <Link className='font-bold' to="/reset-password-request">Restablecer Contraseña</Link></span>
                 </div>
-                <button type="submit">Iniciar sesion</button>
-            </form>
-            <span>No tienes una cuenta? <Link to="/register">Registrarse</Link></span>
-            <br />
-            <span>Olvidaste tu contraseña? <Link to="/reset-password-request">Restablecer</Link></span>
-        </div>
+            </div >
+        </div >
     )
 }
 

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 export const AuthContext = createContext(
     {
         isLogged: false,
-        manageLogin: (auth_token) => { }
+        manageLogin: (auth_token_slack) => { }
     }
 )
 
@@ -23,9 +23,9 @@ function AuthContextProvider({ children }) {
         )
     )
 
-    function manageLogin(auth_token) {
+    function manageLogin(auth_token_slack) {
         //Guardar el auth_token en el localstorage
-        localStorage.setItem('auth_token_slack', auth_token)
+        localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, auth_token_slack)
         setIsLogged(true)
         navigate('/home')
     }
