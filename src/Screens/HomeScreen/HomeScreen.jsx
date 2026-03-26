@@ -25,7 +25,14 @@ const HomeScreen = () => {
 
   return (
     <div>
-      {loading && <p className='text-xl'>Cargando...</p>}
+      {loading &&
+        <div className='flex items-center justify-center h-screen bg-indigo-500'>
+          <div className='text-4xl text-white font-bold animate-ping'>
+            <img className='w-20 mb-4' src="slack-logo.png" alt="" />
+            <span>Slack</span>
+          </div>
+        </div>
+      }
       {!loading && workspaces &&
         <div className='border p-6 h-screen  flex flex-col items-center justify-center'>
           <div className='flex items-center justify-center gap-2 mb-8'>
