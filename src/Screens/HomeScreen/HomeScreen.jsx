@@ -1,7 +1,9 @@
-import React from 'react'
-import { Link } from 'react-router'
+import React, { useEffectEvent } from 'react'
+import { Link, useNavigate } from 'react-router'
 import useWorkspaces from '../../hooks/useWorkspaces.jsx'
 import { FaArrowRightLong } from "react-icons/fa6";
+import { MdSpaceDashboard } from "react-icons/md";
+import CreateButton from '../../Components/CreateButton.jsx';
 
 
 /*
@@ -15,14 +17,10 @@ import { FaArrowRightLong } from "react-icons/fa6";
 const HomeScreen = () => {
   const { loading, error, workspaces } = useWorkspaces()
 
-  console.log(
-    {
-      loading,
-      error,
-      workspaces
-    }
-  )
-
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate('/workspace/new')
+  }
   return (
     <div>
       {loading &&
@@ -41,35 +39,40 @@ const HomeScreen = () => {
           </div>
           <h2 className='text-2xl text-center max-w-lg font-bold text-indigo-900 mb-2'>Bienvenido de vuelta! <span className='text-black'>Te ves bien hoy.</span></h2>
           <p className='max-w-lg text-xl text-center text-slate-600'>Selecciona un espacio de trabajo para continuar trabajando con tu equipo.</p>
+
           {workspaces.length === 0
             ? <div className='mt-8 flex item-center justify-center'>
               <p className='text-xl text-slate-600 font-semibold'>No hay espacios de trabajo</p>
             </div>
-            : workspaces.map(workspace => (
-              <div className='mt-8 bg-white w-full max-w-2xl shadow-2xl  rounded-lg py-4' key={workspace.workspace_id}>
-                <div className='px-8 py-4'><span className='text-lg text-slate-600  font-semibold'>Workspaces de {workspace.user_email}</span></div>
-                <Link to={`/workspace/${workspace.workspace_id}`} className='text-xl group cursor-pointer transition-all duration-300'>
-                  <div className='w-full gap- flex items-center justify-between border-y border-slate-200 gap-4 px-8 py-4 '>
-                    <div className='flex items-center justify-between gap-4'>
-                      <div className='flex items-start justify-between gap-8'>
-                        {
-                          workspace.workspace_img === ""
-                            ? <img className='w-14 h-14 rounded-full' src="slack-logo.png" alt="" />
-                            : <img className='w-14 h-14 rounded-full' src={workspace.workspace_img} alt="" />
-                        }
-                        <div className='flex items-start flex-col justify-center'>
-                          <h3 className='text-xl font-bold'>{workspace.workspace_title}</h3>
-                          <p className='text-lg text-slate-400'>{workspace.workspace_description}</p>
+            :
+            <div className='mt-8 bg-white w-full max-w-2xl shadow-2xl  rounded-lg py-4 mb-10'>
+              <div className='px-8 py-4 flex items-center gap-2'><MdSpaceDashboard className='text-2xl text-slate-600' /><span className='text-lg text-slate-600  font-semibold'>Mis espacios de trabajo</span></div>
+              {workspaces.map(workspace => (
+                <div key={workspace.workspace_id}>
+                  <Link to={`/workspace/${workspace.workspace_id}`} className='text-xl group cursor-pointer transition-all duration-300'>
+                    <div className='w-full gap- flex items-center justify-between border-y border-slate-200 gap-4 px-8 py-4 '>
+                      <div className='flex items-center justify-between gap-4'>
+                        <div className='flex items-start justify-between gap-8'>
+                          {
+                            workspace.workspace_img === ""
+                              ? <img className='w-14 h-14 rounded-full' src="slack-logo.png" alt="" />
+                              : <img className='w-14 h-14 rounded-full' src={workspace.workspace_img} alt="" />
+                          }
+                          <div className='flex items-start flex-col justify-center'>
+                            <h3 className='text-xl font-bold'>{workspace.workspace_title}</h3>
+                            <p className='text-lg text-slate-400'>{workspace.workspace_description}</p>
+                          </div>
                         </div>
                       </div>
+                      <FaArrowRightLong className='group-hover:translate-x-2 transition-all duration-300' />
                     </div>
-                    <FaArrowRightLong className='group-hover:translate-x-2 transition-all duration-300' />
-                  </div>
-                </Link>
-              </div>
-            ))
+                  </Link>
+                </div>
+              ))
+              }
+            </div>
           }
-
+          <CreateButton className="bg-indigo-500 text-white px-4 py-2 rounded-lg cursor-pointer" text="Crear espacio de trabajo" onClick={handleClick} />
         </div>
       }
     </div >
