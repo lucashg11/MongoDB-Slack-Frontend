@@ -7,8 +7,16 @@ import ResetPasswordScreen from './Screens/ResetPasswordScreen/ResetPasswordScre
 import AuthMiddleware from './Middlewares/AuthMiddleware'
 import HomeScreen from './Screens/HomeScreen/HomeScreen';
 import CreateWorkspaceScreen from './Screens/CreateWorkspaceScreen/CreateWorkspaceScreen'
+import WorkspaceScreen from './Screens/WorkspaceScreen/WorkspaceScreen'
+import WorkspaceContextProvider from './Context/WorkspaceContext'
 
 import './globals.css'
+
+const WorkspaceWithContext = () => (
+  <WorkspaceContextProvider>
+    <WorkspaceScreen />
+  </WorkspaceContextProvider>
+)
 
 const App = () => {
   return (
@@ -21,6 +29,7 @@ const App = () => {
       <Route element={<AuthMiddleware />}>
         <Route path='/home' element={<HomeScreen />} />
         <Route path='/workspace/new' element={<CreateWorkspaceScreen />} />
+        <Route path='/workspace/:workspace_id' element={<WorkspaceWithContext />} />
       </Route>
     </Routes>
   )

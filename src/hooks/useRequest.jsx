@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 function useRequest() {
 	const [response, setResponse] = useState(null);
@@ -6,7 +6,7 @@ function useRequest() {
 	const [loading, setLoading] = useState(false);
 
 
-	async function sendRequest({ requestCb }) {
+	const sendRequest = useCallback(async ({ requestCb }) => {
 		try {
 			setResponse(null)
 			setError(null)
@@ -21,7 +21,7 @@ function useRequest() {
 		finally {
 			setLoading(false)
 		}
-	}
+	}, [])
 
 
 	return {

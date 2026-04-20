@@ -47,26 +47,26 @@ const ResetPasswordRequestScreen = () => {
 	})
 
 	return (
-		<div className='w-full h-screen p-6  bg-indigo-500 flex items-center justify-center'>
-			<div className='w-full flex flex-col bg-white p-6 rounded-xl shadow-xl md:flex-row md:max-w-4xl md:gap-8'>
-				<div className='flex flex-col gap-4 md:w-1/2'>
-					<div className='w-full flex gap-2 items-center justify-center'>
-						<img className='w-8' src="slack-logo.png" alt="Logo de Slack" />
-						<h1 className='text-xl font-semibold'>Restablecer contraseña</h1>
+		<div className='w-full min-h-screen p-4 sm:p-6 bg-indigo-500 flex items-center justify-center'>
+			<div className='w-full flex flex-col bg-white p-6 sm:p-8 rounded-2xl shadow-2xl md:flex-row md:max-w-4xl md:gap-12'>
+				<div className='flex flex-col gap-6 md:w-1/2 md:mb-0 mb-8'>
+					<div className='w-full flex gap-3 items-center justify-center md:justify-start'>
+						<img className='w-10 h-10 transition-transform duration-300 hover:scale-110' src="slack-logo.png" alt="Logo de Slack" />
+						<h1 className='text-2xl font-semibold'>Restablecer contraseña</h1>
 					</div>
-					<img className='w-2/3 mx-auto md:w-full' src="reset-pass-img.png" alt="Ilustracion de restablecimiento de contraseña" />
+					<img className='w-2/3 mx-auto md:w-full transition-opacity duration-300' src="reset-pass-img.png" alt="Ilustracion de restablecimiento de contraseña" />
 				</div>
 				<div className='w-full flex flex-col items-center justify-center md:w-1/2'>
 					{
 						response && !loading && !error ?
-							<p>{response.message}</p>
+							<p className='text-center text-slate-700'>{response.message}</p>
 							:
-							<div className='w-full flex flex-col gap-4'>
-								<p className='text-sm text-center text-slate-600 '>
-									Se enviara un mail con instrucciones para que puedas restablecer tu contraseña
+							<div className='w-full flex flex-col gap-5'>
+								<p className='text-sm text-center text-slate-600'>
+									Se enviará un mail con instrucciones para que puedas restablecer tu contraseña
 								</p>
-								<form className='w-full flex flex-col gap-4' onSubmit={onSubmit}>
-									<div className='w-full flex flex-col '>
+								<form className='w-full flex flex-col gap-6' onSubmit={onSubmit}>
+									<div className='w-full flex flex-col'>
 										<Input
 											htmlFor="email"
 											type="email"
@@ -76,16 +76,18 @@ const ResetPasswordRequestScreen = () => {
 											value={formState[FORM_FIELDS.EMAIL]}
 										/>
 									</div>
-									<RegisterButton className="bg-blue-400 text-white px-8 py-2 rounded-full cursor-pointer mt-4" text={loading ? 'Cargando...' : 'Enviar solicitud'} disabled={loading} />
+									<RegisterButton 
+										className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50" 
+										text={loading ? 'Cargando...' : 'Enviar solicitud'} 
+										disabled={loading} 
+									/>
 								</form>
-								<div className='flex flex-col gap-2 mt-4'>
-									<span className='text-xs text-slate-600 inline-flex items-center '>Recuerdas tu contraseña? <Link className='font-bold' to={'/login'}>Inciar sesion</Link></span>
-									<span className='text-xs text-slate-600 inline-flex items-center '>No tienes una cuenta? <Link className='font-bold' to="/register">Registrarse</Link></span>
+								<div className='flex flex-col gap-3 mt-2'>
+									<span className='text-sm text-slate-600 inline-flex items-center gap-1'>¿Recuerdas tu contraseña? <Link className='font-bold text-indigo-500 hover:text-indigo-600 transition-colors duration-200' to={'/login'}>Iniciar sesión</Link></span>
+									<span className='text-sm text-slate-600 inline-flex items-center gap-1'>¿No tienes una cuenta? <Link className='font-bold text-indigo-500 hover:text-indigo-600 transition-colors duration-200' to="/register">Registrarse</Link></span>
 								</div>
 							</div>
-
 					}
-
 				</div>
 			</div>
 		</div>

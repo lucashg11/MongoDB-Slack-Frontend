@@ -65,14 +65,13 @@ const CreateWorkspaceScreen = () => {
 		[response]
 	)
 	return (
-		<div className='w-full h-screen bg-indigo-500 p-6 flex items-center justify-center'>
-			<div className='w-full flex flex-col bg-white rounded-xl shadow-xl p-6 md:flex-row md:max-w-4xl md:gap-8'>
-
-				<div className='w-full flex flex-col'>
-					<h1 className='text-2xl font-semibold mb-4'>
+		<div className='w-full min-h-screen bg-indigo-500 p-4 sm:p-6 flex items-center justify-center'>
+			<div className='w-full flex flex-col bg-white rounded-2xl shadow-2xl p-6 sm:p-8 md:flex-row md:max-w-4xl md:gap-12'>
+				<div className='w-full flex flex-col px-4 sm:px-8 py-6 md:py-0'>
+					<h1 className='text-3xl font-semibold mb-8'>
 						Crear un espacio de trabajo
 					</h1>
-					<form className='w-full flex flex-col gap-4 mb-10' onSubmit={onSubmit}>
+					<form className='w-full flex flex-col gap-6 mb-8' onSubmit={onSubmit}>
 						<div className='w-full flex flex-col'>
 							<Input
 								htmlFor="title"
@@ -104,16 +103,15 @@ const CreateWorkspaceScreen = () => {
 						</div>
 						<CreateButton
 							type="submit"
-							text={loading ? "Creando..." : "Crear"}
+							text={loading ? "Creando..." : "Crear espacio"}
 							disabled={loading}
 							ariaLabel="Boton para crear un espacio de trabajo"
-							className="mt-10 bg-blue-400 text-white px-8 py-2 rounded-full cursor-pointer disabled:opacity-50"
+							className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
 						/>
-						{error && <span className='text-red-500 text-sm font-semibold text-center'>{error?.message || 'Ocurrió un error al crear el espacio de trabajo'}</span>}
-						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center'>{response.message || 'Error al crear el espacio de trabajo'}</span>}
-						{response && response.ok && <span className='text-green-500 text-sm font-semibold text-center'>El espacio de trabajo se ha creado exitosamente.</span>}
+						{error && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{error?.message || 'Ocurrió un error al crear el espacio de trabajo'}</span>}
+						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{response.message || 'Error al crear el espacio de trabajo'}</span>}
+						{response && response.ok && <span className='text-green-500 text-sm font-semibold text-center transition-all duration-300'>El espacio de trabajo se ha creado exitosamente.</span>}
 					</form>
-					<span className='text-xs text-slate-600 inline-flex items-center gap-2'>Ya tienes un espacio de trabajo? <Link className='font-bold text-indigo-500' to="/login">Iniciar sesion</Link></span>
 				</div>
 			</div>
 		</div>

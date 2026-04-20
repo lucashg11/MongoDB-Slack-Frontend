@@ -70,37 +70,37 @@ const LoginScreen = () => {
 
 
 	return (
-		<div className='w-full h-screen p-6  bg-indigo-500 flex items-center justify-center'>
-			<div className='w-full flex flex-col bg-white p-6 rounded-xl shadow-xl md:flex-row md:max-w-4xl md:gap-8'>
-				<div className='w-full flex flex-col gap-10 mb-10 md:w-1/2'>
-					<div className='w-full flex items-center gap-2'>
-						<img className='w-8' src="slack-logo.png" alt="Logo de Slack" />
-						<h1 className='text-2xl font-semibold'>Bienvenido a Slack</h1>
+		<div className='w-full min-h-screen p-4 sm:p-6 bg-indigo-500 flex items-center justify-center'>
+			<div className='w-full flex flex-col bg-white p-6 sm:p-8 rounded-2xl shadow-2xl md:flex-row md:max-w-4xl md:gap-12 transition-all duration-300'>
+				<div className='w-full flex flex-col gap-8 mb-8 md:mb-0 md:w-1/2'>
+					<div className='w-full flex items-center gap-3'>
+						<img className='w-10 h-10 transition-transform duration-300 hover:scale-110' src="slack-logo.png" alt="Logo de Slack" />
+						<h1 className='text-3xl font-semibold'>Bienvenido a Slack</h1>
 					</div>
-					<img className='w-[90%] mx-auto md:w-full' src="login-img.png" alt="Ilustracion de inicio de sesion" />
+					<img className='w-[90%] mx-auto md:w-full transition-opacity duration-300' src="login-img.png" alt="Ilustracion de inicio de sesion" />
 				</div>
 				<div className='w-full flex flex-col md:w-1/2'>
-					<h1 className='text-2xl font-semibold mb-4'>
+					<h1 className='text-3xl font-semibold mb-6'>
 						Iniciar sesion
 					</h1>
 
 					{
 						(response && !response.ok) && (
-							<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm" role="alert">
+							<div className="bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-lg mb-6 text-sm transition-all duration-300" role="alert">
 								<span className="block sm:inline">{response.payload?.detail || response.message || response.error || 'Credenciales incorrectas o problema de inicio de sesión.'}</span>
 							</div>
 						)
 					}
 					{
 						error && (
-							<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm" role="alert">
-								<strong className="font-bold">Error de conexión: </strong>
+							<div className="bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-lg mb-6 text-sm transition-all duration-300" role="alert">
+								<strong className="font-bold">Error: </strong>
 								<span className="block sm:inline">{error.message || 'No se pudo conectar al servidor.'}</span>
 							</div>
 						)
 					}
 
-					<form onSubmit={onSubmit} className='w-full flex flex-col gap-4 mb-10'>
+					<form onSubmit={onSubmit} className='w-full flex flex-col gap-6 mb-8'>
 						<div className='flex flex-col gap-2'>
 							<Input
 								htmlFor="email"
@@ -120,7 +120,7 @@ const LoginScreen = () => {
 							/>
 							<button
 								type="button"
-								className="absolute right-0 bottom-1 text-slate-500 hover:text-slate-700"
+								className="absolute right-2 top-9 text-slate-500 hover:text-slate-700 transition-colors duration-200"
 								onClick={() => setShowPassword(!showPassword)}
 								aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
 							>
@@ -135,11 +135,13 @@ const LoginScreen = () => {
 							type="submit"
 							text="Iniciar sesion"
 							ariaLabel="Boton para iniciar sesion"
-							className="mt-10 bg-blue-400 text-white px-8 py-2 rounded-full cursor-pointer"
+							className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95"
 						/>
 					</form>
-					<span className='text-xs text-slate-600 inline-flex items-center gap-2 mb-4'>No tienes una cuenta? <Link className='font-bold text-indigo-500' to="/register">Registrarse</Link></span>
-					<span className='text-xs text-slate-600 inline-flex items-center gap-2'>Olvidaste tu contraseña? <Link className='font-bold text-indigo-500' to="/reset-password-request">Restablecer Contraseña</Link></span>
+					<div className='flex flex-col gap-3 text-sm'>
+						<span className='text-slate-600 inline-flex items-center gap-2'>No tienes una cuenta? <Link className='font-bold text-indigo-500 hover:text-indigo-600 transition-colors duration-200' to="/register">Registrarse</Link></span>
+						<span className='text-slate-600 inline-flex items-center gap-2'>Olvidaste tu contraseña? <Link className='font-bold text-indigo-500 hover:text-indigo-600 transition-colors duration-200' to="/reset-password-request">Restablecer Contraseña</Link></span>
+					</div>
 				</div>
 			</div >
 		</div >

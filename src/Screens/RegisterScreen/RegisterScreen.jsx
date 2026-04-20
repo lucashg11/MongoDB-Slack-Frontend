@@ -72,21 +72,21 @@ const RegisterScreen = () => {
 		[response]
 	)
 	return (
-		<div className='w-full h-screen bg-indigo-500 p-6 flex items-center justify-center'>
-			<div className='w-full flex flex-col bg-white rounded-xl shadow-xl p-6 md:flex-row md:max-w-4xl md:gap-8'>
-				<div className='flex flex-col gap-2 md:w-1/2'>
-					<div className='w-full flex items-center gap-2'>
-						<img className='w-8' src="slack-logo.png" alt="Logo de Slack" />
-						<h1 className='text-2xl font-semibold '>Bienvenidos a Slack</h1>
+		<div className='w-full min-h-screen bg-indigo-500 p-4 sm:p-6 flex items-center justify-center'>
+			<div className='w-full flex flex-col bg-white rounded-2xl shadow-2xl p-6 sm:p-8 md:flex-row md:max-w-4xl md:gap-12'>
+				<div className='flex flex-col gap-6 md:w-1/2 md:mb-0 mb-8'>
+					<div className='w-full flex items-center gap-3 justify-center md:justify-start'>
+						<img className='w-10 h-10 transition-transform duration-300 hover:scale-110' src="slack-logo.png" alt="Logo de Slack" />
+						<h1 className='text-3xl font-semibold'>Bienvenidos a Slack</h1>
 					</div>
-					<img className='w-[90%] mx-auto md:w-full' src="register.png" alt="Ilustracion de registro" />
+					<img className='w-[90%] mx-auto md:w-full transition-opacity duration-300' src="register.png" alt="Ilustracion de registro" />
 				</div>
 				<div className='w-full flex flex-col md:w-1/2'>
-					<h1 className='text-2xl font-semibold mb-4'>
+					<h1 className='text-3xl font-semibold mb-6'>
 						Registrarse
 					</h1>
-					<form className='w-full flex flex-col gap-4 mb-10' onSubmit={onSubmit}>
-						<div className='w-full flex flex-col'>
+					<form className='w-full flex flex-col gap-6 mb-8' onSubmit={onSubmit}>
+						<div className='w-full flex flex-col gap-2'>
 							<Input
 								htmlFor="name"
 								type="text"
@@ -112,11 +112,10 @@ const RegisterScreen = () => {
 								name={REGISTER_FORM_FIELDS.PASSWORD}
 								onChange={handleChangeInput}
 								value={formState[REGISTER_FORM_FIELDS.PASSWORD]}
-
 							/>
 							<button
 								type="button"
-								className="border absolute right-0 bottom-1 text-slate-500 hover:text-slate-700"
+								className="absolute right-2 top-9 text-slate-500 hover:text-slate-700 transition-colors duration-200"
 								onClick={() => setShowPassword(!showPassword)}
 								aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
 							>
@@ -132,13 +131,13 @@ const RegisterScreen = () => {
 							text={loading ? "Registrando..." : "Registrarse"}
 							disabled={loading}
 							ariaLabel="Boton para registrarse"
-							className="mt-10 bg-blue-400 text-white px-8 py-2 rounded-full cursor-pointer disabled:opacity-50"
+							className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
 						/>
-						{error && <span className='text-red-500 text-sm font-semibold text-center'>{error?.message || 'Ocurrió un error al registrarse'}</span>}
-						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center'>{response.message || 'Error al registrar usuario'}</span>}
-						{response && response.ok && <span className='text-green-500 text-sm font-semibold text-center'>Te has registrado exitosamente, te enviamos un mail con instrucciones.</span>}
+						{error && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{error?.message || 'Ocurrió un error al registrarse'}</span>}
+						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{response.message || 'Error al registrar usuario'}</span>}
+						{response && response.ok && <span className='text-green-500 text-sm font-semibold text-center transition-all duration-300'>Te has registrado exitosamente, te enviamos un mail con instrucciones.</span>}
 					</form>
-					<span className='text-xs text-slate-600 inline-flex items-center gap-2'>Ya tienes una cuenta? <Link className='font-bold text-indigo-500' to="/login">Iniciar sesion</Link></span>
+					<span className='text-sm text-slate-600 inline-flex items-center gap-2'>Ya tienes una cuenta? <Link className='font-bold text-indigo-500 hover:text-indigo-600 transition-colors duration-200' to="/login">Iniciar sesion</Link></span>
 				</div>
 			</div>
 
