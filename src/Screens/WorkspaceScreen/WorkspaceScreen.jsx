@@ -6,13 +6,13 @@ import MessagesList from '../../Components/MessagesList.jsx'
 import CreateChannelModal from '../../Components/CreateChannelModal.jsx'
 import InviteMemberModal from '../../Components/InviteMemberModal.jsx'
 import InviteToChannelModal from '../../Components/InviteToChannelModal.jsx'
-import { useParams } from 'react-router'
+import { useParams, useOutletContext } from 'react-router'
 import { HiBars3, HiArrowLeft, HiPlus } from 'react-icons/hi2'
 
 const WorkspaceScreen = () => {
     const { workspace_id } = useParams()
     const { workspaceLoading, refreshWorkspace } = useContext(WorkspaceContext)
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const { isSidebarOpen, setIsSidebarOpen } = useOutletContext()
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
     const [isInviteToChannelModalOpen, setIsInviteToChannelModalOpen] = useState(false)
@@ -41,14 +41,14 @@ const WorkspaceScreen = () => {
                 {/* Overlay para móvil */}
                 {isSidebarOpen && (
                     <div
-                        className="fixed inset-0 bg-slate-900/60 z-40 md:hidden backdrop-blur-md transition-all duration-500 ease-out animate-in fade-in"
+                        className="fixed inset-0 bg-slate-900/60 z-40 md:hidden backdrop-blur-md transition-all duration-300 ease-out animate-in fade-in"
                         onClick={() => setIsSidebarOpen(false)}
                     />
                 )}
 
                 {/* Sidebar */}
                 <div className={`
-                    fixed inset-y-0 left-0 z-50 w-70 sm:w-72  md:w-80 bg-white/95 md:bg-slate-50 transform transition-all duration-500 ease-in-out shadow-2xl md:shadow-none backdrop-blur-xl md:backdrop-blur-none
+                    fixed inset-y-0 left-0 z-50 w-72 md:w-80 bg-white md:bg-slate-50 transform transition-all duration-300 ease-in-out shadow-2xl md:shadow-none
                     md:relative md:translate-x-0 md:flex md:z-auto md:border-r md:border-slate-200/50
                     ${isSidebarOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 md:opacity-100'}
                 `}>

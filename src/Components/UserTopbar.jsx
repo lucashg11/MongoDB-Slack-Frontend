@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { Link, useLocation } from 'react-router'
-import { HiOutlineUser, HiOutlineLogout, HiOutlineChevronDown, HiArrowSmLeft } from 'react-icons/hi'
+import { HiOutlineUser, HiOutlineLogout, HiOutlineChevronDown, HiOutlineChevronLeft } from 'react-icons/hi'
 import { HiBars3 } from 'react-icons/hi2'
 
 const UserTopbar = ({ toggleSidebar }) => {
@@ -13,30 +13,21 @@ const UserTopbar = ({ toggleSidebar }) => {
 
     return (
         <header className="h-16 bg-indigo-900 text-white flex items-center justify-between px-4 sm:px-6 shadow-md z-50">
-            <div className="flex items-center gap-4">
-                {isWorkspace && (
-                    <button
-                        onClick={toggleSidebar}
-                        className="md:hidden p-2 hover:bg-indigo-800 rounded-lg transition-colors"
-                    >
-                        <HiBars3 className="w-6 h-6" />
-                    </button>
-                )}
-
-                <Link to="/home" className="flex items-center gap-2 group">
-                    <img src="/slack-logo.png" alt="Slack" className="w-8 h-8 group-hover:scale-110 transition-transform" />
-                    <span className="font-bold text-xl hidden sm:inline-block tracking-tight">Slack</span>
-                </Link>
-
+            <div className="flex items-center gap-2 sm:gap-4">
                 {isWorkspace && (
                     <Link
                         to="/home"
-                        className="ml-4 flex items-center gap-2 text-indigo-200 hover:text-white transition-colors text-sm font-medium bg-indigo-800/50 px-3 py-1.5 rounded-full"
+                        className="flex items-center justify-center p-2 rounded-lg bg-indigo-800 text-indigo-100 hover:bg-indigo-700 hover:text-white transition-all active:scale-95 shadow-sm mr-2"
+                        title="Volver a mis workspaces"
                     >
-                        <HiArrowSmLeft className="w-4 h-4" />
-                        <span className="hidden md:inline">Mis Workspaces</span>
+                        <HiOutlineChevronLeft className="w-5 h-5 stroke-2" />
                     </Link>
                 )}
+
+                <Link to="/home" className="flex items-center gap-2 group">
+                    <img src="/slack-logo.png" alt="Slack" className="w-7 h-7 sm:w-8 sm:h-8 group-hover:scale-110 transition-transform" />
+                    <span className="font-extrabold text-lg sm:text-xl sm:inline-block tracking-tight">Slack</span>
+                </Link>
             </div>
 
             <div className="relative">
