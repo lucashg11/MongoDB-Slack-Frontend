@@ -10,7 +10,6 @@ const BaseModal = ({
     maxWidth = 'max-w-md',
     maxHeight = 'max-h-[90vh]'
 }) => {
-    // Prevent scrolling when modal is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden'
@@ -38,7 +37,6 @@ const BaseModal = ({
             <div
                 className={`bg-white relative rounded-2xl shadow-2xl ${maxWidth} w-full ${maxHeight} animate-in zoom-in-95 duration-300 flex flex-col overflow-hidden`}
             >
-                {/* Header */}
                 <div className="p-8 pb-0 flex items-start justify-between">
                     <div className="flex-1">
                         <h2 className="text-2xl font-bold text-slate-900 leading-tight">
@@ -67,7 +65,6 @@ const BaseModal = ({
                     </button>
                 </div>
 
-                {/* Content */}
                 <div className="p-8 flex-1 overflow-y-auto custom-scrollbar">
                     {children}
                 </div>

@@ -43,7 +43,6 @@ const WorkspaceScreen = () => {
             />
 
             <div className="flex flex-1 overflow-hidden w-full relative">
-                {/* Overlay para móvil */}
                 {isSidebarOpen && (
                     <div
                         className="fixed inset-0 bg-slate-900/60 z-40 md:hidden backdrop-blur-md transition-all duration-300 ease-out animate-in fade-in"
@@ -51,7 +50,6 @@ const WorkspaceScreen = () => {
                     />
                 )}
 
-                {/* Sidebar */}
                 <div className={`
                     fixed inset-y-0 left-0 z-50 w-72 md:w-80 bg-white md:bg-slate-50 transform transition-all duration-300 ease-in-out shadow-2xl md:shadow-none
                     md:relative md:translate-x-0 md:flex md:z-auto md:border-r md:border-slate-200/50
@@ -62,7 +60,6 @@ const WorkspaceScreen = () => {
                         onOpenInviteToChannelModal={handleOpenInviteToChannel}
                     />
 
-                    {/* Botón cerrar sidebar en móvil */}
                     <button
                         onClick={() => setIsSidebarOpen(false)}
                         className="absolute top-2 right-4 p-2 text-slate-500 hover:text-indigo-600 md:hidden bg-slate-100 hover:bg-indigo-50 rounded-full transition-colors"
@@ -72,7 +69,6 @@ const WorkspaceScreen = () => {
                     </button>
                 </div>
 
-                {/* Contenido principal */}
                 <div className="flex-1 overflow-hidden w-full relative">
                     <MessagesList />
                 </div>

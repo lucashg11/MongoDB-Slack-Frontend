@@ -39,7 +39,6 @@ function AuthContextProvider({ children }) {
 				setUser(decodedUser)
 				setIsLogged(true)
 
-				// Fetch full profile data (bio, picture)
 				getMe().then(response => {
 					if (response.ok) {
 						setUser(prev => ({ ...prev, ...response.data.user }))

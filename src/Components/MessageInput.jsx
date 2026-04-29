@@ -29,7 +29,6 @@ const MessageInput = ({ workspace_id, channel_id, onMessageSent }) => {
 			}
 		} catch (error) {
 			console.error('Error sending message:', error)
-			// Restaurar el contenido si falló el envío (opcional)
 			setContent(messageContent)
 		}
 	}

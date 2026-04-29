@@ -22,7 +22,6 @@ const EditWorkspaceModal = ({ isOpen, onClose, workspace, onWorkspaceUpdated }) 
         }
     })
 
-    // Update form when workspace changes (e.g. when opening the modal)
     useEffect(() => {
         if (workspace) {
             setFormState({
@@ -54,7 +53,6 @@ const EditWorkspaceModal = ({ isOpen, onClose, workspace, onWorkspaceUpdated }) 
         try {
             let url_image = workspace.url_image
 
-            // If a new image was selected, upload it first
             if (formState.image) {
                 const uploadRes = await uploadFile(formState.image.name, formState.image)
                 if (uploadRes.ok) {

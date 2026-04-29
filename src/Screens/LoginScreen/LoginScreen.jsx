@@ -46,22 +46,17 @@ const LoginScreen = () => {
 	}
 
 	const {
-		handleChangeInput, //Funcion de cambio del input, debemos asociarlas a cada input
-		onSubmit, //Funcion que asociaremos al evento submit del formario
+		handleChangeInput,
+		onSubmit,
 		formState
-	} = useForm({ //Usamos useForm cada vez que tengamos que capurar campos de un formulario (Manejo de formularios)
-		initialFormState,  //Estado incial del formulario
-		submitFn: onLogin //Funcion que se activa al enviar formulario
+	} = useForm({
+		initialFormState,
+		submitFn: onLogin
 	})
 
-	/* 
-	La funcion se carga cada vez que cambie response
-	*/
 	useEffect(
 		() => {
-			//Si la respuesta es correcta
 			if (response && response.ok) {
-				//Guardo el token en mi contexto
 				manageLogin(response.data.auth_token)
 			}
 		},
@@ -120,7 +115,7 @@ const LoginScreen = () => {
 							/>
 							<button
 								type="button"
-								className="absolute right-2 top-9 text-slate-500 hover:text-slate-700 transition-colors duration-200"
+								className="absolute right-4 top-4 text-slate-500 hover:text-slate-700 transition-colors duration-200"
 								onClick={() => setShowPassword(!showPassword)}
 								aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
 							>

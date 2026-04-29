@@ -36,7 +36,6 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 const newImageUrl = response.data.url
                 setProfilePicture(newImageUrl)
                 
-                // Actualizar inmediatamente en el backend
                 const updateResponse = await updateProfile({
                     name,
                     profile_bio: bio,

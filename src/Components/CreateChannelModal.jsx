@@ -40,7 +40,6 @@ const CreateChannelModal = ({ workspace_id, isOpen, onClose, onChannelCreated })
 		submitFn: onCreateChannel
 	})
 
-	// Cerrar modal y limpiar formulario cuando se crea exitosamente
 	React.useEffect(() => {
 		if (response && response.ok) {
 			resetForm()
@@ -87,7 +86,7 @@ const CreateChannelModal = ({ workspace_id, isOpen, onClose, onChannelCreated })
 						value={formState[CREATE_CHANNEL_FIELDS.DESCRIPTION]}
 						onChange={handleChangeInput}
 						placeholder="¿De qué trata este canal?"
-						className="w-full px-4 py-3 border-2 border-slate-100 bg-slate-50 rounded-xl outline-none focus:border-indigo-500 focus:bg-white transition-all duration-300 resize-none min-h-[100px]"
+						className="w-full px-4 py-3 border-2 border-slate-100 bg-slate-50 rounded-xl outline-none focus:border-indigo-500 focus:bg-white transition-all duration-300 resize-none min-h-25"
 					/>
 				</div>
 

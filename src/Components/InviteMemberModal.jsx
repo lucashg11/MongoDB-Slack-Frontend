@@ -33,7 +33,6 @@ const InviteMemberModal = ({ workspace_id, isOpen, onClose, onMemberInvited }) =
 		submitFn: onInviteMember
 	})
 
-	// Cerrar modal y limpiar formulario cuando se invita exitosamente
 	React.useEffect(() => {
 		if (response && response.ok) {
 			resetForm()

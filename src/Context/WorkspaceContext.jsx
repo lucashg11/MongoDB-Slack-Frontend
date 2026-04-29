@@ -35,11 +35,9 @@ function WorkspaceContextProvider({ workspace_id: prop_workspace_id, children })
 	const [workspaceLoading, setWorkspaceLoading] = useState(false)
 	const [channelLoading, setChannelLoading] = useState(false)
 
-	// Contador para forzar re-fetch sin cambiar otras deps
 	const [workspaceKey, setWorkspaceKey] = useState(0)
 	const [messagesKey, setMessagesKey] = useState(0)
 
-	// ── Fetch workspace + channels en paralelo ──────────────────────────
 	useEffect(() => {
 		if (!workspace_id) return
 		let cancelled = false
@@ -62,7 +60,6 @@ function WorkspaceContextProvider({ workspace_id: prop_workspace_id, children })
 		return () => { cancelled = true }
 	}, [workspace_id, workspaceKey])
 
-	// ── Fetch mensajes al cambiar de canal ─────────────────────────────
 	useEffect(() => {
 		if (!workspace_id || !selectedChannel?._id) {
 			setMessages([])
@@ -85,7 +82,6 @@ function WorkspaceContextProvider({ workspace_id: prop_workspace_id, children })
 		return () => { cancelled = true }
 	}, [workspace_id, selectedChannel?._id, messagesKey])
 
-	// ── Acciones semánticas públicas ───────────────────────────────────
 	const selectChannel = useCallback((channel) => {
 		setSelectedChannel(channel)
 	}, [])

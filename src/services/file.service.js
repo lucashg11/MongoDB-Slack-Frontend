@@ -8,7 +8,6 @@ async function uploadFile(file_name, file) {
     const res_http = await fetch(`${ENVIRONMENT.API_URL}api/file/upload`, {
         method: 'POST',
         headers: {
-            /* "Content-Type": "multipart/form-data", */
             "Authorization": `Bearer ${localStorage.getItem(LOCALSTORAGE_TOKEN_KEY)}`
         },
         body: body

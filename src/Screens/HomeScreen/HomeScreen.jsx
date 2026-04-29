@@ -7,15 +7,6 @@ import { HiOutlineTrash } from "react-icons/hi2";
 import { deleteWorkspace } from '../../services/workspaceService.js';
 import ConfirmationModal from '../../Components/ConfirmationModal.jsx';
 
-
-/*
-    Manejar la respuesta del servidor con useRequest o hook de preferencia para representar los estados en la pantalla, en especial el cargando y la lista de espacios de trabajo
-    Cada espacio de trabajo debera mostrar el titulo y un link que diga "Abrir workspace" y lleve hacia "/workspace/:id_workspace"
-
-    Recomendacion:
-    Usen un efecto que se ejecute solo una vez para cargar la lista de espacios de trabajo
-*/
-
 const HomeScreen = () => {
   const { loading, error, workspaces, refreshWorkspaces } = useWorkspaces()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -84,7 +75,7 @@ const HomeScreen = () => {
                   <MdSpaceDashboard className='text-3xl text-slate-600' />
                   <span className='text-lg sm:text-xl text-slate-700 font-semibold'>Mis espacios de trabajo</span>
                 </div>
-                <div className='divide-y divide-slate-200 max-h-[400px] overflow-y-auto custom-scrollbar'>
+                <div className='divide-y divide-slate-200 max-h-100] overflow-y-auto custom-scrollbar'>
                   {workspaces.map(workspace => (
                     <Link key={workspace.workspace_id} to={`/workspace/${workspace.workspace_id}`} className='group block transition-all duration-300 hover:bg-indigo-50'>
                       <div className='w-full flex items-center justify-between gap-4 sm:gap-6 px-6 sm:px-8 py-5 hover:shadow-sm transition-all duration-300'>

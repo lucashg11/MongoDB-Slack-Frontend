@@ -11,7 +11,6 @@ const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMember
     const { sendRequest, response: inviteResponse, error: inviteError, loading: inviteLoading } = useRequest()
     const [invitedId, setInvitedId] = useState(null)
 
-    // Filtra los miembros del workspace que aún no están en el canal
     const availableMembers = useMemo(() => {
         if (!members || !channel?.members) return members ?? []
 
@@ -40,7 +39,6 @@ const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMember
         }
     }, [inviteResponse, onMemberInvited, onClose])
 
-    // Limpiar estado al cerrar
     useEffect(() => {
         if (!isOpen) setInvitedId(null)
     }, [isOpen])

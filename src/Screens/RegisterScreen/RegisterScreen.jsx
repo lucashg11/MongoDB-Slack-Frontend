@@ -23,9 +23,6 @@ const RegisterScreen = () => {
 		NAME: 'name'
 	}
 
-	/* 
-	Implementar el useForm para este formulario de registro
-	*/
 	const initialFormState = {
 		[REGISTER_FORM_FIELDS.NAME]: '',
 		[REGISTER_FORM_FIELDS.EMAIL]: '',
@@ -63,9 +60,7 @@ const RegisterScreen = () => {
 	const navigate = useNavigate()
 	useEffect(
 		() => {
-			//Si la respuesta es correcta
 			if (response && response.ok) {
-				//Guardo el token en mi contexto
 				navigate('/login')
 			}
 		},
