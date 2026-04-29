@@ -7,7 +7,13 @@ function useForm({ initialFormState, submitFn }) {
 
 	function handleChangeInput(event) {
 		const field_name = event.target.name
-		const field_value = event.target.value
+		let field_value
+		if(event.target.type === 'file') {
+			field_value = event.target.files[0]
+		}
+		else{
+			field_value = event.target.value
+		}
 		setFormState(
 			(prevFormState) => {
 				return {

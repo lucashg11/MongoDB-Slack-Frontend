@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router'
+import { Route, Routes, useParams } from 'react-router'
 import LoginScreen from './Screens/LoginScreen/LoginScreen'
 import RegisterScreen from './Screens/RegisterScreen/RegisterScreen'
 import ResetPasswordRequestScreen from './Screens/ResetPasswordRequestScreen/ResetPasswordRequestScreen'
@@ -12,11 +12,14 @@ import WorkspaceContextProvider from './Context/WorkspaceContext'
 
 import './globals.css'
 
-const WorkspaceWithContext = () => (
-  <WorkspaceContextProvider>
-    <WorkspaceScreen />
-  </WorkspaceContextProvider>
-)
+const WorkspaceWithContext = () => {
+  const { workspace_id } = useParams()
+  return (
+    <WorkspaceContextProvider workspace_id={workspace_id}>
+      <WorkspaceScreen />
+    </WorkspaceContextProvider>
+  )
+}
 
 const App = () => {
   return (

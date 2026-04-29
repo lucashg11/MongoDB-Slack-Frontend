@@ -2,18 +2,12 @@ import React, { useContext } from 'react'
 import { useParams } from 'react-router'
 import { WorkspaceContext } from '../Context/WorkspaceContext'
 import MessageInput from './MessageInput'
-import useWorkspaceData from '../hooks/useWorkspaceData'
 import useScrollToBottom from '../hooks/useScrollToBottom'
 
 const MessagesList = () => {
-	const { selectedChannel, messages, channelMembers } = useContext(WorkspaceContext)
+	const { selectedChannel, messages, refreshMessages } = useContext(WorkspaceContext)
 	const { workspace_id } = useParams()
-	const { refreshMessages } = useWorkspaceData(workspace_id)
 	const scrollRef = useScrollToBottom([messages])
-
-	const handleMessageSent = () => {
-		refreshMessages()
-	}
 
 	if (!selectedChannel) {
 		return (
@@ -111,10 +105,9 @@ const MessagesList = () => {
 			<MessageInput
 				workspace_id={workspace_id}
 				channel_id={selectedChannel._id}
-				onMessageSent={handleMessageSent}
+				onMessageSent={refreshMessages}
 			/>
 		</div>
-
 	)
 }
 

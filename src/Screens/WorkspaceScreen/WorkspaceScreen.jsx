@@ -1,65 +1,33 @@
 import React, { useContext, useState } from 'react'
+import { WorkspaceContext } from '../../Context/WorkspaceContext.jsx'
+import WorkspaceHeader from '../../Components/WorkspaceHeader.jsx'
+import ChannelsList from '../../Components/ChannelsList.jsx'
+import MessagesList from '../../Components/MessagesList.jsx'
+import CreateChannelModal from '../../Components/CreateChannelModal.jsx'
+import InviteMemberModal from '../../Components/InviteMemberModal.jsx'
+import InviteToChannelModal from '../../Components/InviteToChannelModal.jsx'
 import { useParams } from 'react-router'
-import useWorkspaceData from '../../hooks/useWorkspaceData'
-import { WorkspaceContext } from '../../Context/WorkspaceContext'
-import { AuthContext } from '../../Context/AuthContext'
-import WorkspaceHeader from '../../Components/WorkspaceHeader'
-import ChannelsList from '../../Components/ChannelsList'
-import MessagesList from '../../Components/MessagesList'
-import CreateChannelModal from '../../Components/CreateChannelModal'
-import InviteMemberModal from '../../Components/InviteMemberModal'
-import InviteToChannelModal from '../../Components/InviteToChannelModal'
-import useCurrentMember from '../../hooks/useCurrentMember'
-import useRequest from '../../hooks/useRequest'
-import { getChannelsByWorkspace } from '../../services/workspaceService'
-import { HiBars3, HiArrowLeft, HiPlus, HiUserPlus } from 'react-icons/hi2'
+import { HiBars3, HiArrowLeft, HiPlus } from 'react-icons/hi2'
 
 const WorkspaceScreen = () => {
     const { workspace_id } = useParams()
-    const { loading, error, refreshWorkspace } = useWorkspaceData(workspace_id)
-    const { setChannels, workspaceMembers } = useContext(WorkspaceContext)
-    const { user } = useContext(AuthContext)
-    const { canInvite } = useCurrentMember()
+    const { workspaceLoading, refreshWorkspace } = useContext(WorkspaceContext)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
     const [isInviteToChannelModalOpen, setIsInviteToChannelModalOpen] = useState(false)
     const [channelToInvite, setChannelToInvite] = useState(null)
-    const { sendRequest } = useRequest()
-
-    const handleChannelCreated = () => {
-        refreshWorkspace()
-    }
-
-    const handleMemberInvited = () => {
-        refreshWorkspace()
-    }
 
     const handleOpenInviteToChannel = (channel) => {
         setChannelToInvite(channel)
         setIsInviteToChannelModalOpen(true)
     }
 
-    const handleMemberInvitedToChannel = () => {
-        refreshWorkspace()
-    }
-
-    if (loading) {
+    if (workspaceLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-indigo-500">
                 <div className="bg-white rounded-lg shadow-xl p-8">
                     <p className="text-lg text-slate-600">Cargando workspace...</p>
-                </div>
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-indigo-500">
-                <div className="bg-white rounded-lg shadow-xl p-8 max-w-md">
-                    <p className="text-lg text-red-600 font-semibold mb-2">Error</p>
-                    <p className="text-slate-600">{error?.message || 'Error al cargar el workspace'}</p>
                 </div>
             </div>
         )
@@ -78,18 +46,18 @@ const WorkspaceScreen = () => {
                     />
                 )}
 
-                {/* Sidebar - Se oculta a la izquierda en móvil y es estático en desktop */}
+                {/* Sidebar */}
                 <div className={`
-                    fixed inset-y-0 left-0 z-50 w-[280px] sm:w-72  md:w-80 bg-white/95 md:bg-slate-50 transform transition-all duration-500 ease-in-out shadow-2xl md:shadow-none backdrop-blur-xl md:backdrop-blur-none
+                    fixed inset-y-0 left-0 z-50 w-70 sm:w-72  md:w-80 bg-white/95 md:bg-slate-50 transform transition-all duration-500 ease-in-out shadow-2xl md:shadow-none backdrop-blur-xl md:backdrop-blur-none
                     md:relative md:translate-x-0 md:flex md:z-auto md:border-r md:border-slate-200/50
                     ${isSidebarOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 md:opacity-100'}
                 `}>
-                    <ChannelsList 
-                        onOpenModal={() => setIsCreateModalOpen(true)} 
+                    <ChannelsList
+                        onOpenModal={() => setIsCreateModalOpen(true)}
                         onOpenInviteToChannelModal={handleOpenInviteToChannel}
                     />
 
-                    {/* Botón para cerrar sidebar en móvil */}
+                    {/* Botón cerrar sidebar en móvil */}
                     <button
                         onClick={() => setIsSidebarOpen(false)}
                         className="absolute top-2 right-4 p-2 text-slate-500 hover:text-indigo-600 md:hidden bg-slate-100 hover:bg-indigo-50 rounded-full transition-colors"
@@ -138,14 +106,14 @@ const WorkspaceScreen = () => {
                 workspace_id={workspace_id}
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
-                onChannelCreated={handleChannelCreated}
+                onChannelCreated={refreshWorkspace}
             />
 
             <InviteMemberModal
                 workspace_id={workspace_id}
                 isOpen={isInviteModalOpen}
                 onClose={() => setIsInviteModalOpen(false)}
-                onMemberInvited={handleMemberInvited}
+                onMemberInvited={refreshWorkspace}
             />
 
             <InviteToChannelModal
@@ -153,34 +121,10 @@ const WorkspaceScreen = () => {
                 channel={channelToInvite}
                 isOpen={isInviteToChannelModalOpen}
                 onClose={() => setIsInviteToChannelModalOpen(false)}
-                onMemberInvited={handleMemberInvitedToChannel}
+                onMemberInvited={refreshWorkspace}
             />
         </div>
     )
 }
 
 export default WorkspaceScreen
-
-{/*<div className="workspace-screen flex flex-col h-screen bg-slate-100">
-            <WorkspaceHeader />
-            
-            <div className="flex flex-1 overflow-hidden">
-                <div className="hidden md:block md:w-80">
-                    <ChannelsList />
-                </div>
-                
-                <div className="flex-1 overflow-hidden">
-                    <MessagesList />
-                </div>
-            </div>
-
-            Para móvil: mostrar selector de canales en modal o drawer 
-            <div className="md:hidden fixed bottom-4 left-4 z-40">
-                <details className="dropdown">
-                    <summary className="btn btn-primary">Canales</summary>
-                    <div className="dropdown-content bg-white rounded-lg shadow-lg p-4 w-64">
-                        <ChannelsList />
-                    </div>
-                </details>
-            </div>
-        </div>*/}

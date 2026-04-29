@@ -4,7 +4,7 @@ import useCurrentMember from '../hooks/useCurrentMember'
 import { HiUserPlus } from 'react-icons/hi2'
 
 const WorkspaceHeader = ({ onOpenInviteModal }) => {
-	const { workspace, workspaceMembers } = useContext(WorkspaceContext)
+	const { workspace, members } = useContext(WorkspaceContext)
 	const { canInvite } = useCurrentMember()
 
 	return (
@@ -35,11 +35,11 @@ const WorkspaceHeader = ({ onOpenInviteModal }) => {
 
 				<div className="members-section">
 					<h3 className="text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wide">
-						Miembros del Workspace ({workspaceMembers?.filter(m => m.acceptInvitation === 'accepted').length || 0})
+						Miembros del Workspace ({members?.filter(m => m.acceptInvitation === 'accepted').length || 0})
 					</h3>
 					<div className="flex flex-wrap gap-2">
-						{workspaceMembers && workspaceMembers.length > 0 ? (
-							workspaceMembers
+						{members && members.length > 0 ? (
+							members
 								.filter(member => member.acceptInvitation === 'accepted')
 								.map((member, index) => (
 								<div

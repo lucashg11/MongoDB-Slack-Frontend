@@ -1,51 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import useRequest from '../hooks/useRequest'
-import { getWorkspaceMembers, inviteToChannel } from '../services/workspaceService'
+import { inviteToChannel } from '../services/workspaceService'
+import { WorkspaceContext } from '../Context/WorkspaceContext'
 import CreateButton from './CreateButton'
 
 const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMemberInvited }) => {
-    const { sendRequest, response: membersResponse, loading: membersLoading } = useRequest()
-    const { sendRequest: sendInviteRequest, response: inviteResponse, error: inviteError, loading: inviteLoading } = useRequest()
-    const [members, setMembers] = useState([])
+    const { members } = useContext(WorkspaceContext)
+    const { sendRequest, response: inviteResponse, error: inviteError, loading: inviteLoading } = useRequest()
+    const [invitedId, setInvitedId] = useState(null)
 
-    useEffect(() => {
-        if (isOpen && workspace_id) {
-            sendRequest({
-                requestCb: () => getWorkspaceMembers(workspace_id)
-            })
-        }
-    }, [isOpen, workspace_id, sendRequest])
+    // Filtra los miembros del workspace que aún no están en el canal
+    const availableMembers = useMemo(() => {
+        if (!members || !channel?.members) return members ?? []
 
-    useEffect(() => {
-        if (membersResponse && membersResponse.ok && membersResponse.data?.members) {
-            // Filter out members who are already in the channel
-            const channelMemberIds = channel?.members?.map(m => {
-                const id = m.member_id?._id || m.member_id
-                return id ? String(id) : null
-            }).filter(Boolean) || []
+        const channelMemberIds = new Set(
+            channel.members.map((m) => String(m.member_id?._id || m.member_id)).filter(Boolean)
+        )
 
-            const filteredMembers = membersResponse.data.members.filter(
-                member => {
-                    const memberId = member.member_id ? String(member.member_id) : null
-                    return memberId && !channelMemberIds.includes(memberId)
-                }
-            )
-            setMembers(filteredMembers)
-        }
-    }, [membersResponse, channel])
+        return members.filter((m) => {
+            const memberId = m.member_id ? String(m.member_id) : null
+            return memberId && !channelMemberIds.has(memberId)
+        })
+    }, [members, channel?.members])
 
     const handleInvite = (member_id) => {
-        sendInviteRequest({
+        setInvitedId(member_id)
+        sendRequest({
             requestCb: () => inviteToChannel(workspace_id, channel._id, member_id)
         })
     }
 
     useEffect(() => {
-        if (inviteResponse && inviteResponse.ok) {
+        if (inviteResponse?.ok) {
+            setInvitedId(null)
             if (onMemberInvited) onMemberInvited()
             onClose()
         }
     }, [inviteResponse, onMemberInvited, onClose])
+
+    // Limpiar estado al cerrar
+    useEffect(() => {
+        if (!isOpen) setInvitedId(null)
+    }, [isOpen])
 
     if (!isOpen) return null
 
@@ -58,7 +54,7 @@ const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMember
                             Invitar al canal
                         </h2>
                         <p className="text-slate-500 text-sm mt-1">
-                            Añade miembros de {channel?.name}
+                            Añade miembros a #{channel?.name}
                         </p>
                     </div>
                     <button
@@ -70,17 +66,13 @@ const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMember
                 </div>
 
                 <div className="flex-1 overflow-y-auto mb-6 pr-2 custom-scrollbar">
-                    {membersLoading ? (
-                        <div className="flex justify-center py-8">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-                        </div>
-                    ) : members.length === 0 ? (
+                    {availableMembers.length === 0 ? (
                         <p className="text-center text-slate-500 py-8">
                             No hay más miembros para invitar.
                         </p>
                     ) : (
                         <ul className="divide-y divide-slate-100">
-                            {members.map(member => (
+                            {availableMembers.map((member) => (
                                 <li key={member.member_id} className="py-3 flex items-center justify-between group">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
@@ -93,10 +85,10 @@ const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMember
                                     </div>
                                     <button
                                         onClick={() => handleInvite(member.member_id)}
-                                        disabled={inviteLoading}
+                                        disabled={inviteLoading && invitedId === member.member_id}
                                         className="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 px-3 py-2 rounded-lg transition-all disabled:opacity-50"
                                     >
-                                        Invitar
+                                        {inviteLoading && invitedId === member.member_id ? 'Invitando...' : 'Invitar'}
                                     </button>
                                 </li>
                             ))}
