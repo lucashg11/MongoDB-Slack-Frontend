@@ -15,11 +15,18 @@ function useWorkspaces() {
 		}, [])
 
 
+	const refreshWorkspaces = () => {
+		sendRequest({
+			requestCb: getWorkspace
+		})
+	}
+
 	return {
 		response,
 		error,
 		loading,
-		workspaces: response?.data?.workspaces
+		workspaces: response?.data?.workspaces,
+		refreshWorkspaces
 	}
 }
 

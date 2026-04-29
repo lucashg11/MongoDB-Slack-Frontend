@@ -71,8 +71,12 @@ const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMember
                             {availableMembers.map((member) => (
                                 <li key={member.member_id} className="py-4 flex items-center justify-between group">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg shadow-sm border border-indigo-100/50">
-                                            {member.user_name ? member.user_name.charAt(0).toUpperCase() : '?'}
+                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg shadow-sm border border-indigo-100/50 overflow-hidden ${!member.user_img ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-200'}`}>
+                                            {member.user_img ? (
+                                                <img src={member.user_img} alt={member.user_name} className="w-full h-full object-cover" />
+                                            ) : (
+                                                member.user_name ? member.user_name.charAt(0).toUpperCase() : '?'
+                                            )}
                                         </div>
                                         <div>
                                             <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{member.user_name}</p>

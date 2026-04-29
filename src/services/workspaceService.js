@@ -1,8 +1,6 @@
 import ENVIRONMENT from "../config/env.config.js";
 import { LOCALSTORAGE_TOKEN_KEY } from "../Context/AuthContext.jsx";
 
-
-
 export async function getWorkspace() {
 	const res_http = await fetch(ENVIRONMENT.API_URL + '/api/workspace', {
 		method: "GET",
@@ -149,6 +147,32 @@ export async function inviteToChannel(workspace_id, channel_id, member_id) {
 export async function getWorkspaceMembers(workspace_id) {
 	const res_http = await fetch(ENVIRONMENT.API_URL + `/api/workspace/${workspace_id}/member`, {
 		method: "GET",
+		headers: {
+			'Authorization': "Bearer " + localStorage.getItem(LOCALSTORAGE_TOKEN_KEY)
+		}
+	})
+
+	const res_json = await res_http.json()
+	return res_json
+}
+
+export async function updateWorkspace(workspace_id, workspace) {
+	const res_http = await fetch(ENVIRONMENT.API_URL + `/api/workspace/${workspace_id}`, {
+		method: "PATCH",
+		headers: {
+			'Authorization': "Bearer " + localStorage.getItem(LOCALSTORAGE_TOKEN_KEY),
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(workspace)
+	})
+
+	const res_json = await res_http.json()
+	return res_json
+}
+
+export async function deleteWorkspace(workspace_id) {
+	const res_http = await fetch(ENVIRONMENT.API_URL + `/api/workspace/${workspace_id}`, {
+		method: "DELETE",
 		headers: {
 			'Authorization': "Bearer " + localStorage.getItem(LOCALSTORAGE_TOKEN_KEY)
 		}

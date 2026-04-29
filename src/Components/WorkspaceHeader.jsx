@@ -1,13 +1,15 @@
 import React, { useContext } from 'react'
 import { WorkspaceContext } from '../Context/WorkspaceContext'
 import useCurrentMember from '../hooks/useCurrentMember'
-import { HiUserPlus, HiBars3 } from 'react-icons/hi2'
+import { HiUserPlus, HiOutlineCog6Tooth } from 'react-icons/hi2'
+import { TbLayoutSidebarLeftExpandFilled } from "react-icons/tb";
 import { useOutletContext } from 'react-router'
 import Button from './Button'
 
-const WorkspaceHeader = ({ onOpenInviteModal }) => {
+const WorkspaceHeader = ({ onOpenInviteModal, onOpenEditModal }) => {
 	const { workspace, members } = useContext(WorkspaceContext)
-	const { canInvite } = useCurrentMember()
+	const { canInvite, isAdmin, isOwner } = useCurrentMember()
+	const canEditWorkspace = isAdmin || isOwner
 	const { setIsSidebarOpen } = useOutletContext() || {}
 
 	return (
@@ -16,23 +18,39 @@ const WorkspaceHeader = ({ onOpenInviteModal }) => {
 				<div className="flex flex-col md:flex-row md:items-center gap-4 flex-1">
 					<div className="flex items-center gap-3 flex-1">
 						<Button
-							variant="secondary"
-							size="sm"
+							size="xs"
 							onClick={() => setIsSidebarOpen?.(true)}
 							className="md:hidden p-2 shadow-none"
-							ariaLabel="Abrir menú"
+							ariaLabel="Ver Canales"
+							title='Ver Canales'
 						>
-							<HiBars3 className="w-6 h-6 stroke-2" />
+							<TbLayoutSidebarLeftExpandFilled className='w-6 h-6' />
 						</Button>
-						<div className="min-w-0">
-							<h1 className="text-lg md:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
-								{workspace?.title}
-							</h1>
-							{workspace?.description && (
-								<p className="text-[10px] md:text-xs text-slate-500 truncate max-w-md">
-									{workspace.description}
-								</p>
-							)}
+						<div className="w-full flex items-center justify-between gap-2">
+							<div>
+								<h1 className="text-lg md:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
+									{workspace?.title}
+								</h1>
+								{workspace?.description && (
+									<p className="text-[10px] md:text-xs text-slate-500 truncate max-w-md">
+										{workspace.description}
+									</p>
+								)}
+							</div>
+							<div>
+								{canEditWorkspace && (
+									<Button
+										onClick={onOpenEditModal}
+										size="sm"
+										variant="secondary"
+										className="px-2"
+										ariaLabel="Editar Workspace"
+										title="Ajustes del Workspace"
+									>
+										<HiOutlineCog6Tooth className="w-6 h-6" />
+									</Button>
+								)}
+							</div>
 						</div>
 					</div>
 
@@ -49,10 +67,14 @@ const WorkspaceHeader = ({ onOpenInviteModal }) => {
 									.map((member, index) => (
 										<div
 											key={member._id || `member-${index}`}
-											className="h-8 w-8 rounded-full ring-2 ring-white bg-indigo-500 text-white flex items-center justify-center text-xs font-bold"
+											className={`h-8 w-8 rounded-full ring-2 ring-white flex items-center justify-center text-xs font-bold overflow-hidden ${!member.user_img ? 'bg-indigo-500 text-white' : 'bg-slate-200'}`}
 											title={member.user_name}
 										>
-											{member.user_name?.charAt(0).toUpperCase()}
+											{member.user_img ? (
+												<img src={member.user_img} alt={member.user_name} className="w-full h-full object-cover" />
+											) : (
+												member.user_name?.charAt(0).toUpperCase()
+											)}
 										</div>
 									))
 							) : null}
@@ -72,10 +94,12 @@ const WorkspaceHeader = ({ onOpenInviteModal }) => {
 							size="sm"
 							className="px-4"
 							ariaLabel="Invitar a Workspace"
+							title="Invitar Miembros"
 						>
 							<HiUserPlus className="w-6 h-6" />
 						</Button>
 					)}
+
 				</div>
 			</div>
 		</div>

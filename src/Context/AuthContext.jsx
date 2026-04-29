@@ -1,12 +1,14 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { getMe } from "../services/userService";
 
 export const AuthContext = createContext(
 	{
 		isLogged: false,
 		user: null,
 		manageLogin: (auth_token_slack) => { },
-		logout: () => { }
+		logout: () => { },
+		updateUser: (userData, token) => { }
 	}
 )
 
@@ -33,8 +35,16 @@ function AuthContextProvider({ children }) {
 					return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
 				}).join(''))
 
-				setUser(JSON.parse(jsonPayload))
+				const decodedUser = JSON.parse(jsonPayload)
+				setUser(decodedUser)
 				setIsLogged(true)
+
+				// Fetch full profile data (bio, picture)
+				getMe().then(response => {
+					if (response.ok) {
+						setUser(prev => ({ ...prev, ...response.data.user }))
+					}
+				})
 			} catch (e) {
 				console.error("Error decoding token", e)
 				localStorage.removeItem(LOCALSTORAGE_TOKEN_KEY)
@@ -57,11 +67,19 @@ function AuthContextProvider({ children }) {
 		navigate('/login')
 	}
 
+	function updateUser(userData, token) {
+		if (token) {
+			localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, token)
+		}
+		setUser(prev => ({ ...prev, ...userData }))
+	}
+
 	const providerValues = {
 		isLogged,
 		user,
 		manageLogin,
-		logout
+		logout,
+		updateUser
 	}
 	return (
 		<AuthContext.Provider value={providerValues}>

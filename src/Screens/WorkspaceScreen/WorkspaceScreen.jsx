@@ -6,16 +6,18 @@ import MessagesList from '../../Components/MessagesList.jsx'
 import CreateChannelModal from '../../Components/CreateChannelModal.jsx'
 import InviteMemberModal from '../../Components/InviteMemberModal.jsx'
 import InviteToChannelModal from '../../Components/InviteToChannelModal.jsx'
+import EditWorkspaceModal from '../../Components/EditWorkspaceModal.jsx'
 import { useParams, useOutletContext } from 'react-router'
-import { HiBars3, HiArrowLeft, HiPlus } from 'react-icons/hi2'
+import { HiArrowLeft } from 'react-icons/hi2'
 
 const WorkspaceScreen = () => {
     const { workspace_id } = useParams()
-    const { workspaceLoading, refreshWorkspace } = useContext(WorkspaceContext)
+    const { workspace, workspaceLoading, refreshWorkspace } = useContext(WorkspaceContext)
     const { isSidebarOpen, setIsSidebarOpen } = useOutletContext()
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
     const [isInviteToChannelModalOpen, setIsInviteToChannelModalOpen] = useState(false)
+    const [isEditWorkspaceModalOpen, setIsEditWorkspaceModalOpen] = useState(false)
     const [channelToInvite, setChannelToInvite] = useState(null)
 
     const handleOpenInviteToChannel = (channel) => {
@@ -35,7 +37,10 @@ const WorkspaceScreen = () => {
 
     return (
         <div className="workspace-screen flex flex-col h-full bg-slate-100 w-full overflow-hidden relative">
-            <WorkspaceHeader onOpenInviteModal={() => setIsInviteModalOpen(true)} />
+            <WorkspaceHeader
+                onOpenInviteModal={() => setIsInviteModalOpen(true)}
+                onOpenEditModal={() => setIsEditWorkspaceModalOpen(true)}
+            />
 
             <div className="flex flex-1 overflow-hidden w-full relative">
                 {/* Overlay para móvil */}
@@ -93,6 +98,13 @@ const WorkspaceScreen = () => {
                 isOpen={isInviteToChannelModalOpen}
                 onClose={() => setIsInviteToChannelModalOpen(false)}
                 onMemberInvited={refreshWorkspace}
+            />
+
+            <EditWorkspaceModal
+                workspace={workspace}
+                isOpen={isEditWorkspaceModalOpen}
+                onClose={() => setIsEditWorkspaceModalOpen(false)}
+                onWorkspaceUpdated={refreshWorkspace}
             />
         </div>
     )

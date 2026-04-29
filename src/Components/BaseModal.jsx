@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
-const BaseModal = ({ 
-    isOpen, 
-    onClose, 
-    title, 
-    subtitle, 
-    children, 
+const BaseModal = ({
+    isOpen,
+    onClose,
+    title,
+    subtitle,
+    children,
     maxWidth = 'max-w-md',
     maxHeight = 'max-h-[90vh]'
 }) => {
@@ -29,12 +30,12 @@ const BaseModal = ({
         }
     }
 
-    return (
-        <div 
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300"
+    const modalContent = (
+        <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-9999 p-4 animate-in fade-in duration-300"
             onClick={handleBackdropClick}
         >
-            <div 
+            <div
                 className={`bg-white relative rounded-2xl shadow-2xl ${maxWidth} w-full ${maxHeight} animate-in zoom-in-95 duration-300 flex flex-col overflow-hidden`}
             >
                 {/* Header */}
@@ -54,11 +55,11 @@ const BaseModal = ({
                         className="p-2 -mr-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all group"
                         aria-label="Cerrar"
                     >
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            className="h-6 w-6 transition-transform group-hover:rotate-90" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 transition-transform group-hover:rotate-90"
+                            fill="none"
+                            viewBox="0 0 24 24"
                             stroke="currentColor"
                         >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -73,6 +74,8 @@ const BaseModal = ({
             </div>
         </div>
     )
+
+    return createPortal(modalContent, document.body)
 }
 
 export default BaseModal

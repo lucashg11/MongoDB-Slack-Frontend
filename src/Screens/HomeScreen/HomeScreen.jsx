@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import useWorkspaces from '../../hooks/useWorkspaces.jsx'
 import { FaArrowRightLong } from "react-icons/fa6";
 import { MdSpaceDashboard } from "react-icons/md";
-
+import { HiOutlineTrash } from "react-icons/hi2";
+import { deleteWorkspace } from '../../services/workspaceService.js';
+import ConfirmationModal from '../../Components/ConfirmationModal.jsx';
 
 
 /*
@@ -15,12 +17,43 @@ import { MdSpaceDashboard } from "react-icons/md";
 */
 
 const HomeScreen = () => {
-  const { loading, error, workspaces } = useWorkspaces()
+  const { loading, error, workspaces, refreshWorkspaces } = useWorkspaces()
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [workspaceToDelete, setWorkspaceToDelete] = useState(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const navigate = useNavigate();
   function handleClick() {
     navigate('/workspace/new')
   }
+
+  const handleDeleteClick = (e, workspace) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setWorkspaceToDelete(workspace)
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!workspaceToDelete) return
+
+    setIsDeleting(true)
+    try {
+      const res = await deleteWorkspace(workspaceToDelete.workspace_id)
+      if (res.ok) {
+        refreshWorkspaces()
+        setIsDeleteModalOpen(false)
+      } else {
+        alert(res.message || 'Error al eliminar el espacio de trabajo')
+      }
+    } catch (err) {
+      alert('Error al conectar con el servidor')
+    } finally {
+      setIsDeleting(false)
+      setWorkspaceToDelete(null)
+    }
+  }
+
   return (
     <div className="h-full">
       {loading &&
@@ -53,7 +86,7 @@ const HomeScreen = () => {
                 </div>
                 <div className='divide-y divide-slate-200 max-h-[400px] overflow-y-auto custom-scrollbar'>
                   {workspaces.map(workspace => (
-                    <Link key={workspace.workspace_id} to={`/workspace/${workspace.workspace_id}`} className='block transition-all duration-300 hover:bg-indigo-50'>
+                    <Link key={workspace.workspace_id} to={`/workspace/${workspace.workspace_id}`} className='group block transition-all duration-300 hover:bg-indigo-50'>
                       <div className='w-full flex items-center justify-between gap-4 sm:gap-6 px-6 sm:px-8 py-5 hover:shadow-sm transition-all duration-300'>
                         <div className='flex items-center gap-4 sm:gap-6 flex-1 min-w-0'>
                           <div className='shrink-0'>
@@ -67,14 +100,25 @@ const HomeScreen = () => {
                             <p className='text-sm sm:text-base text-slate-500 truncate'>{workspace.workspace_description || 'Sin descripción'}</p>
                           </div>
                         </div>
-                        <FaArrowRightLong className='text-slate-400 transition-all duration-300 group-hover:translate-x-2 shrink-0' />
+                        <div className='flex items-center gap-2'>
+                          {['owner', 'admin'].includes(workspace.member_role) && (
+                            <button
+                              onClick={(e) => handleDeleteClick(e, workspace)}
+                              className='p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100'
+                              title="Eliminar Workspace"
+                            >
+                              <HiOutlineTrash className='text-xl' />
+                            </button>
+                          )}
+                          <FaArrowRightLong className='text-slate-400 transition-all duration-300 group-hover:translate-x-2 shrink-0' />
+                        </div>
                       </div>
                     </Link>
                   ))}
                 </div>
               </div>
             }
-            <button 
+            <button
               onClick={handleClick}
               className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95"
             >
@@ -83,6 +127,16 @@ const HomeScreen = () => {
           </div>
         </div>
       }
+
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="¿Eliminar espacio de trabajo?"
+        description={`Estás a punto de eliminar "${workspaceToDelete?.workspace_title}". Esta acción borrará todos los canales y mensajes de forma permanente.`}
+        confirmText="Eliminar"
+        isLoading={isDeleting}
+      />
     </div >
   )
 }

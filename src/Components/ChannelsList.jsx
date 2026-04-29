@@ -1,14 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useOutletContext } from 'react-router'
 import { MdAddCircle } from 'react-icons/md'
 import { WorkspaceContext } from '../Context/WorkspaceContext'
 import useCurrentMember from '../hooks/useCurrentMember'
-import { HiCheckCircle, HiUserPlus } from 'react-icons/hi2'
+import { HiCheckCircle, HiUserPlus, HiOutlineTrash } from 'react-icons/hi2'
+import { deleteChannel } from '../services/workspaceService.js'
+import ConfirmationModal from './ConfirmationModal'
 
 const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
-	const { channels, selectedChannel, selectChannel } = useContext(WorkspaceContext)
+	const { workspace, channels, selectedChannel, selectChannel, refreshWorkspace } = useContext(WorkspaceContext)
 	const { currentMember, isAdmin, isOwner } = useCurrentMember()
 	const { setIsSidebarOpen } = useOutletContext() || {}
+
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	const [channelToDelete, setChannelToDelete] = useState(null)
+	const [isDeleting, setIsDeleting] = useState(false)
 
 	const isWorkspaceAdmin = isAdmin || isOwner
 
@@ -19,6 +25,35 @@ const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
 			return String(memberId) === String(currentMember?.member_id) && m.status === 'accepted'
 		})
 	}) ?? []
+
+	const handleDeleteClick = (e, channel) => {
+		e.stopPropagation()
+		setChannelToDelete(channel)
+		setIsDeleteModalOpen(true)
+	}
+
+	const handleConfirmDelete = async () => {
+		if (!channelToDelete) return
+
+		setIsDeleting(true)
+		try {
+			const res = await deleteChannel(workspace._id, channelToDelete._id)
+			if (res.ok) {
+				refreshWorkspace()
+				if (selectedChannel?._id === channelToDelete._id) {
+					selectChannel(null)
+				}
+				setIsDeleteModalOpen(false)
+			} else {
+				alert(res.message || 'Error al eliminar el canal')
+			}
+		} catch (err) {
+			alert('Error al conectar con el servidor')
+		} finally {
+			setIsDeleting(false)
+			setChannelToDelete(null)
+		}
+	}
 
 	const AVATAR_COLORS = [
 		'bg-indigo-500',
@@ -88,19 +123,31 @@ const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
 												)}
 											</div>
 											{isWorkspaceAdmin && (
-												<button
-													onClick={(e) => {
-														e.stopPropagation()
-														onOpenInviteToChannelModal(channel)
-													}}
-													className={`p-2 rounded-xl transition-all shadow-sm ${isSelected
-														? 'bg-indigo-600 text-white hover:bg-indigo-700'
-														: 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
-														}`}
-													title="Invitar al canal"
-												>
-													<HiUserPlus className="text-lg" />
-												</button>
+												<div className="flex items-center gap-2">
+													<button
+														onClick={(e) => {
+															e.stopPropagation()
+															onOpenInviteToChannelModal(channel)
+														}}
+														className={`p-2 rounded-xl transition-all shadow-sm ${isSelected
+															? 'bg-indigo-600 text-white hover:bg-indigo-700'
+															: 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+															}`}
+														title="Invitar al canal"
+													>
+														<HiUserPlus className="text-lg" />
+													</button>
+													<button
+														onClick={(e) => handleDeleteClick(e, channel)}
+														className={`p-2 rounded-xl transition-all shadow-sm ${isSelected
+															? 'bg-white/20 text-white hover:bg-white/30'
+															: 'bg-red-50 text-red-600 hover:bg-red-100'
+															}`}
+														title="Eliminar canal"
+													>
+														<HiOutlineTrash className="text-lg" />
+													</button>
+												</div>
 											)}
 										</div>
 
@@ -110,15 +157,26 @@ const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
 												<div className="flex -space-x-2 mr-3">
 													{displayedMembers.map((member, index) => {
 														const userId = member.member_id?._id || member.member_id
-														const userName = member.member_id?.fk_id_user?.name || 'U'
+														const user = member.member_id?.fk_id_user
+														const userName = user?.name || 'Usuario'
+														const profilePicture = user?.profile_picture
+
 														return (
 															<div
 																key={userId + index}
-																className={`w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm transition-transform group-hover:translate-x-1 ${getColorForId(userId)}`}
+																className={`w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm transition-transform group-hover:translate-x-1 overflow-hidden ${!profilePicture ? getColorForId(userId) : 'bg-slate-200'}`}
 																title={userName}
 																style={{ zIndex: 10 - index }}
 															>
-																{userName.charAt(0).toUpperCase()}
+																{profilePicture ? (
+																	<img 
+																		src={profilePicture} 
+																		alt={userName} 
+																		className="w-full h-full object-cover"
+																	/>
+																) : (
+																	userName.charAt(0).toUpperCase()
+																)}
 															</div>
 														)
 													})}
@@ -143,7 +201,9 @@ const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
 											}) && (
 													<div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-[10px] font-bold uppercase tracking-wider">
 														<HiCheckCircle className="text-xs" />
-														<span>Miembro</span>
+														<span>
+															{isOwner ? 'Dueño' : isAdmin ? 'Admin' : 'Usuario'}
+														</span>
 													</div>
 												)}
 										</div>
@@ -170,6 +230,16 @@ const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
 					</button>
 				</div>
 			)}
+
+			<ConfirmationModal
+				isOpen={isDeleteModalOpen}
+				onClose={() => setIsDeleteModalOpen(false)}
+				onConfirm={handleConfirmDelete}
+				title="¿Eliminar canal?"
+				description={`Estás a punto de eliminar el canal "# ${channelToDelete?.name}". Todos los mensajes se borrarán de forma permanente.`}
+				confirmText="Eliminar"
+				isLoading={isDeleting}
+			/>
 		</div>
 	)
 }

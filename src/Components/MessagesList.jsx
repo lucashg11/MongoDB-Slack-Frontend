@@ -36,14 +36,21 @@ const MessagesList = () => {
 					</div>
 					<div className="hidden sm:flex items-center -space-x-2">
 						{selectedChannel.members?.slice(0, 5).map((member, i) => {
-							const name = member.member_id?.fk_id_user?.name || 'Usuario'
+							const user = member.member_id?.fk_id_user
+							const name = user?.name || 'Usuario'
+							const profilePicture = user?.profile_picture
+
 							return (
 								<div
 									key={member._id || i}
-									className="w-8 h-8 rounded-full border-2 border-white bg-indigo-500 flex items-center justify-center text-white text-xs font-bold ring-2 ring-transparent hover:ring-indigo-200 transition-all cursor-pointer"
+									className={`w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold ring-2 ring-transparent hover:ring-indigo-200 transition-all cursor-pointer overflow-hidden ${!profilePicture ? 'bg-indigo-500' : 'bg-slate-200'}`}
 									title={name}
 								>
-									{name.charAt(0).toUpperCase()}
+									{profilePicture ? (
+										<img src={profilePicture} alt={name} className="w-full h-full object-cover" />
+									) : (
+										name.charAt(0).toUpperCase()
+									)}
 								</div>
 							)
 						})}
@@ -62,14 +69,20 @@ const MessagesList = () => {
 			>
 				{messages && messages.length > 0 ? (
 					messages.map((message) => {
-						const authorName = message.fk_id_member?.fk_id_user?.name || 'Usuario'
+						const user = message.fk_id_member?.fk_id_user
+						const authorName = user?.name || 'Usuario'
+						const profilePicture = user?.profile_picture
 						const initials = authorName.charAt(0).toUpperCase()
 						const time = message.created_at ? new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''
 
 						return (
 							<div key={message._id} className="flex items-start gap-4 group hover:bg-slate-50/50 p-2 -mx-2 rounded-xl transition-all">
-								<div className="w-10 h-10 rounded-xl bg-linear-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-sm shrink-0">
-									{initials}
+								<div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-sm shrink-0 overflow-hidden ${!profilePicture ? 'bg-linear-to-br from-indigo-500 to-indigo-600 text-white' : 'bg-slate-100'}`}>
+									{profilePicture ? (
+										<img src={profilePicture} alt={authorName} className="w-full h-full object-cover" />
+									) : (
+										initials
+									)}
 								</div>
 								<div className="flex-1 min-w-0">
 									<div className="flex items-baseline gap-2 mb-1">

@@ -2,11 +2,12 @@ import React, { useContext, useState } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { Link, useLocation } from 'react-router'
 import { HiOutlineUser, HiOutlineLogout, HiOutlineChevronDown, HiOutlineChevronLeft } from 'react-icons/hi'
-import { HiBars3 } from 'react-icons/hi2'
+import ProfileModal from './ProfileModal'
 
-const UserTopbar = ({ toggleSidebar }) => {
+const UserTopbar = () => {
     const { user, logout } = useContext(AuthContext)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
     const location = useLocation()
 
     const isWorkspace = location.pathname.includes('/workspace/') && !location.pathname.includes('/workspace/new')
@@ -35,11 +36,15 @@ const UserTopbar = ({ toggleSidebar }) => {
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     className="flex items-center gap-2 hover:bg-indigo-800 p-1.5 rounded-lg transition-all"
                 >
-                    <div className="w-8 h-8 bg-indigo-500 rounded-md flex items-center justify-center font-bold text-sm border border-indigo-400">
-                        {user?.user_name?.charAt(0).toUpperCase() || 'U'}
+                    <div className="w-8 h-8 bg-indigo-500 rounded-md flex items-center justify-center font-bold text-sm border border-indigo-400 overflow-hidden">
+                        {user?.profile_picture ? (
+                            <img src={user.profile_picture} alt={user.name} className="w-full h-full object-cover" />
+                        ) : (
+                            user?.name?.charAt(0).toUpperCase() || 'U'
+                        )}
                     </div>
                     <div className="hidden sm:flex flex-col items-start leading-none">
-                        <span className="text-sm font-semibold">{user?.user_name || 'Usuario'}</span>
+                        <span className="text-sm font-semibold">{user?.name || 'Usuario'}</span>
                         <span className="text-[10px] text-indigo-300">En línea</span>
                     </div>
                     <HiOutlineChevronDown className={`w-4 h-4 text-indigo-300 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
@@ -54,10 +59,16 @@ const UserTopbar = ({ toggleSidebar }) => {
                         <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-20 border border-slate-200 animate-in fade-in zoom-in duration-200 origin-top-right">
                             <div className="px-4 py-3 border-b border-slate-100 mb-2">
                                 <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Mi Cuenta</p>
-                                <p className="text-sm font-bold text-slate-900 truncate">{user?.user_email}</p>
+                                <p className="text-[12px] font-bold text-slate-900 truncate">{user?.email}</p>
                             </div>
 
-                            <button className="w-full flex items-center gap-3 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-sm font-medium">
+                            <button 
+                                onClick={() => {
+                                    setIsProfileModalOpen(true)
+                                    setIsMenuOpen(false)
+                                }}
+                                className="w-full flex items-center gap-3 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-sm font-medium"
+                            >
                                 <HiOutlineUser className="w-5 h-5 text-slate-400" />
                                 Ver Perfil
                             </button>
@@ -75,6 +86,11 @@ const UserTopbar = ({ toggleSidebar }) => {
                     </>
                 )}
             </div>
+
+            <ProfileModal 
+                isOpen={isProfileModalOpen} 
+                onClose={() => setIsProfileModalOpen(false)} 
+            />
         </header>
     )
 }

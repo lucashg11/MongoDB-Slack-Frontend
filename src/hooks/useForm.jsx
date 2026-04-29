@@ -37,6 +37,7 @@ function useForm({ initialFormState, submitFn }) {
 		handleChangeInput,
 		onSubmit,
 		formState,
+        setFormState,
 		resetForm
 	}
 }
