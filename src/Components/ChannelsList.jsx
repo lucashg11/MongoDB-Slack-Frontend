@@ -92,8 +92,9 @@ const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
 					<div className="space-y-3 sm:space-y-4">
 						{filteredChannels.map((channel) => {
 							const isSelected = selectedChannel?._id === channel._id
-							const membersCount = channel.members?.length || 0
-							const acceptedMembers = channel.members?.filter(m => m.status === 'accepted') || []
+							const validMembers = channel.members?.filter(m => m.member_id !== null) || []
+							const membersCount = validMembers.length
+							const acceptedMembers = validMembers.filter(m => m.status === 'accepted')
 							const displayedMembers = acceptedMembers.slice(0, 5)
 							const remainingCount = membersCount > 5 ? membersCount - 5 : 0
 
@@ -195,7 +196,7 @@ const ChannelsList = ({ onOpenModal, onOpenInviteToChannelModal }) => {
 												</span>
 											</div>
 
-											{channel.members?.some((m) => {
+											{validMembers.some((m) => {
 												const memberId = m.member_id?._id || m.member_id
 												return String(memberId) === String(currentMember?.member_id) && m.status === 'accepted'
 											}) && (

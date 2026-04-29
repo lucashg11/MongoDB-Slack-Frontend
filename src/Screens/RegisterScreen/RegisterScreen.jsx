@@ -110,7 +110,7 @@ const RegisterScreen = () => {
 							/>
 							<button
 								type="button"
-								className="absolute right-2 top-9 text-slate-500 hover:text-slate-700 transition-colors duration-200"
+								className="absolute right-4 top-3 text-slate-500 hover:text-slate-700 transition-colors duration-200"
 								onClick={() => setShowPassword(!showPassword)}
 								aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
 							>
