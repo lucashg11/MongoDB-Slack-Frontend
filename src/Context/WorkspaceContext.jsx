@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router";
+
 import {
 	getWorkspaceById,
 	getChannelsByWorkspace,
@@ -19,7 +21,11 @@ export const WorkspaceContext = createContext({
 	refreshMessages: () => { }
 })
 
-function WorkspaceContextProvider({ workspace_id, children }) {
+function WorkspaceContextProvider({ workspace_id: prop_workspace_id, children }) {
+	const { workspace_id: param_workspace_id } = useParams()
+	const workspace_id = prop_workspace_id || param_workspace_id
+
+
 	const [workspace, setWorkspace] = useState(null)
 	const [members, setMembers] = useState([])
 	const [channels, setChannels] = useState([])

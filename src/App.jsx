@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes, useParams } from 'react-router'
+import { Route, Routes } from 'react-router'
 import LoginScreen from './Screens/LoginScreen/LoginScreen'
 import RegisterScreen from './Screens/RegisterScreen/RegisterScreen'
 import ResetPasswordRequestScreen from './Screens/ResetPasswordRequestScreen/ResetPasswordRequestScreen'
@@ -8,18 +8,11 @@ import AuthMiddleware from './Middlewares/AuthMiddleware'
 import HomeScreen from './Screens/HomeScreen/HomeScreen';
 import CreateWorkspaceScreen from './Screens/CreateWorkspaceScreen/CreateWorkspaceScreen'
 import WorkspaceScreen from './Screens/WorkspaceScreen/WorkspaceScreen'
-import WorkspaceContextProvider from './Context/WorkspaceContext'
+import WorkspaceMiddleware from './Middlewares/WorkspaceMiddleware'
+
 
 import './globals.css'
 
-const WorkspaceWithContext = () => {
-  const { workspace_id } = useParams()
-  return (
-    <WorkspaceContextProvider workspace_id={workspace_id}>
-      <WorkspaceScreen />
-    </WorkspaceContextProvider>
-  )
-}
 
 const App = () => {
   return (
@@ -32,7 +25,9 @@ const App = () => {
       <Route element={<AuthMiddleware />}>
         <Route path='/home' element={<HomeScreen />} />
         <Route path='/workspace/new' element={<CreateWorkspaceScreen />} />
-        <Route path='/workspace/:workspace_id' element={<WorkspaceWithContext />} />
+        <Route path='/workspace/:workspace_id' element={<WorkspaceMiddleware />}>
+          <Route index element={<WorkspaceScreen />} />
+        </Route>
       </Route>
     </Routes>
   )
