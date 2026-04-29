@@ -5,7 +5,8 @@ export const AuthContext = createContext(
 	{
 		isLogged: false,
 		user: null,
-		manageLogin: (auth_token_slack) => { }
+		manageLogin: (auth_token_slack) => { },
+		logout: () => { }
 	}
 )
 
@@ -49,10 +50,18 @@ function AuthContextProvider({ children }) {
 		navigate('/home')
 	}
 
+	function logout() {
+		localStorage.removeItem(LOCALSTORAGE_TOKEN_KEY)
+		setIsLogged(false)
+		setUser(null)
+		navigate('/login')
+	}
+
 	const providerValues = {
 		isLogged,
 		user,
-		manageLogin
+		manageLogin,
+		logout
 	}
 	return (
 		<AuthContext.Provider value={providerValues}>

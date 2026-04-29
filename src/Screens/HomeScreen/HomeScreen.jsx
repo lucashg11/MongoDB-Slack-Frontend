@@ -22,9 +22,9 @@ const HomeScreen = () => {
     navigate('/workspace/new')
   }
   return (
-    <div>
+    <div className="h-full">
       {loading &&
-        <div className='flex items-center justify-center min-h-screen bg-indigo-500'>
+        <div className='flex items-center justify-center h-full bg-indigo-500'>
           <div className='text-4xl text-white font-bold animate-pulse'>
             <img className='w-24 mb-4 mx-auto transition-transform duration-300 hover:scale-110' src="slack-logo.png" alt="" />
             <span>Slack</span>
@@ -32,7 +32,7 @@ const HomeScreen = () => {
         </div>
       }
       {!loading && workspaces &&
-        <div className='min-h-screen w-full p-4 sm:p-8 bg-linear-to-br from-slate-50 to-slate-100 flex flex-col items-center justify-center'>
+        <div className='h-full w-full p-4 sm:p-8 bg-linear-to-br from-slate-50 to-slate-100 flex flex-col items-center justify-center'>
           <div className='flex flex-col w-full max-w-2xl'>
             <div className='flex items-center justify-center gap-3 mb-10 sm:mb-12'>
               <img className='w-14 h-14 transition-transform duration-300 hover:scale-110' src="slack-logo.png" alt="" />
@@ -51,7 +51,7 @@ const HomeScreen = () => {
                   <MdSpaceDashboard className='text-3xl text-slate-600' />
                   <span className='text-lg sm:text-xl text-slate-700 font-semibold'>Mis espacios de trabajo</span>
                 </div>
-                <div className='divide-y divide-slate-200'>
+                <div className='divide-y divide-slate-200 max-h-[400px] overflow-y-auto custom-scrollbar'>
                   {workspaces.map(workspace => (
                     <Link key={workspace.workspace_id} to={`/workspace/${workspace.workspace_id}`} className='block transition-all duration-300 hover:bg-indigo-50'>
                       <div className='w-full flex items-center justify-between gap-4 sm:gap-6 px-6 sm:px-8 py-5 hover:shadow-sm transition-all duration-300'>

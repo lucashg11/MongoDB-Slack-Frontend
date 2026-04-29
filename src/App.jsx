@@ -11,6 +11,7 @@ import WorkspaceScreen from './Screens/WorkspaceScreen/WorkspaceScreen'
 import WorkspaceMiddleware from './Middlewares/WorkspaceMiddleware'
 
 
+import MainLayout from './Components/MainLayout'
 import './globals.css'
 
 
@@ -23,10 +24,12 @@ const App = () => {
       <Route path='/reset-password-request' element={<ResetPasswordRequestScreen />} />
       <Route path='/reset-password/:reset_password_token' element={<ResetPasswordScreen />} />
       <Route element={<AuthMiddleware />}>
-        <Route path='/home' element={<HomeScreen />} />
-        <Route path='/workspace/new' element={<CreateWorkspaceScreen />} />
-        <Route path='/workspace/:workspace_id' element={<WorkspaceMiddleware />}>
-          <Route index element={<WorkspaceScreen />} />
+        <Route element={<MainLayout />}>
+          <Route path='/home' element={<HomeScreen />} />
+          <Route path='/workspace/new' element={<CreateWorkspaceScreen />} />
+          <Route path='/workspace/:workspace_id' element={<WorkspaceMiddleware />}>
+            <Route index element={<WorkspaceScreen />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
