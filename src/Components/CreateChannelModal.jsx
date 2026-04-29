@@ -4,6 +4,8 @@ import useForm from '../hooks/useForm'
 import { createChannel } from '../services/workspaceService'
 import Input from './Input'
 import CreateButton from './CreateButton'
+import BaseModal from './BaseModal'
+import Button from './Button'
 
 const CreateChannelModal = ({ workspace_id, isOpen, onClose, onChannelCreated }) => {
 	const { sendRequest, response, error, loading } = useRequest()
@@ -49,85 +51,74 @@ const CreateChannelModal = ({ workspace_id, isOpen, onClose, onChannelCreated })
 		}
 	}, [response, resetForm, onChannelCreated, onClose])
 
-	if (!isOpen) return null
-
 	return (
-		<div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 p-4">
-			<div className="bg-white relative rounded-lg shadow-2xl max-w-md w-full p-6">
-				<div className="flex items-center justify-between mb-6">
-					<h2 className="text-2xl font-bold text-slate-900">
-						Crear nuevo canal
-					</h2>
-					<button
-						onClick={onClose}
-						className="text-slate-400 hover:text-slate-600 text-2xl "
-						aria-label="Cerrar"
-					>
-						×
-					</button>
+		<BaseModal
+			isOpen={isOpen}
+			onClose={onClose}
+			title="Crear nuevo canal"
+			subtitle="Los canales son donde tu equipo se comunica"
+		>
+			<form onSubmit={onSubmit} className="flex flex-col gap-6">
+				<div className="flex flex-col gap-2">
+					<label htmlFor="channel-name" className="uppercase text-xs font-bold text-slate-500 tracking-wider">
+						Nombre del canal
+					</label>
+					<Input
+						id="channel-name"
+						type="text"
+						name={CREATE_CHANNEL_FIELDS.NAME}
+						placeholder="ej. proyectos-2024"
+						onChange={handleChangeInput}
+						value={formState[CREATE_CHANNEL_FIELDS.NAME]}
+						required
+					/>
+					<p className="text-xs text-slate-400 italic">
+						El nombre será mostrado como #nombre_canal
+					</p>
 				</div>
 
-				<form onSubmit={onSubmit} className="flex flex-col gap-4">
-					<div className="flex flex-col gap-2">
-						<Input
-							htmlFor="channel-name"
-							type="text"
-							name={CREATE_CHANNEL_FIELDS.NAME}
-							onChange={handleChangeInput}
-							value={formState[CREATE_CHANNEL_FIELDS.NAME]}
-						/>
-						<p className="text-xs text-slate-500">
-							El nombre será mostrado como #nombre_canal
+				<div className="flex flex-col gap-2">
+					<label htmlFor="channel-desc" className="uppercase text-xs font-bold text-slate-500 tracking-wider">
+						Descripción (Opcional)
+					</label>
+					<textarea
+						id="channel-desc"
+						name={CREATE_CHANNEL_FIELDS.DESCRIPTION}
+						value={formState[CREATE_CHANNEL_FIELDS.DESCRIPTION]}
+						onChange={handleChangeInput}
+						placeholder="¿De qué trata este canal?"
+						className="w-full px-4 py-3 border-2 border-slate-100 bg-slate-50 rounded-xl outline-none focus:border-indigo-500 focus:bg-white transition-all duration-300 resize-none min-h-[100px]"
+					/>
+				</div>
+
+				{(error || (response && !response.ok)) && (
+					<div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm animate-in shake-x duration-500">
+						<p className="font-bold flex items-center gap-2">
+							<span>⚠</span> Error
 						</p>
+						<p>{error?.message || response?.payload?.detail || response?.message || 'Error al crear el canal'}</p>
 					</div>
+				)}
 
-					<div className="flex flex-col gap-2">
-						<label className="uppercase text-sm font-medium text-slate-700 block mb-1">
-							Descripción (Opcional)
-						</label>
-						<textarea
-							name={CREATE_CHANNEL_FIELDS.DESCRIPTION}
-							value={formState[CREATE_CHANNEL_FIELDS.DESCRIPTION]}
-							onChange={handleChangeInput}
-							placeholder="¿De qué trata este canal?"
-							className="w-full px-3 py-2 border-b-2 border-slate-300 bg-transparent outline-none focus:outline-none focus:border-indigo-500 transition-colors duration-300 resize-none"
-							rows="3"
-						/>
-					</div>
-
-					{error && (
-						<div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-							<p className="font-semibold">Error</p>
-							<p>{error?.message || 'No se pudo crear el canal'}</p>
-						</div>
-					)}
-
-					{response && !response.ok && (
-						<div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-							<p className="font-semibold">Error</p>
-							<p>{response?.payload?.detail || response?.message || 'Error al crear el canal'}</p>
-						</div>
-					)}
-
-					<div className="flex gap-3 mt-4">
-						<button
-							type="button"
-							onClick={onClose}
-							disabled={loading}
-							className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition-colors duration-200 disabled:opacity-50"
-						>
-							Cancelar
-						</button>
-						<CreateButton
-							type="submit"
-							text={loading ? 'Creando...' : 'Crear canal'}
-							disabled={loading || !formState[CREATE_CHANNEL_FIELDS.NAME].trim()}
-							className="flex-1 bg-indigo-500 hover:bg-indigo-600 disabled:bg-indigo-300 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-200"
-						/>
-					</div>
-				</form>
-			</div>
-		</div>
+				<div className="flex gap-4 pt-2">
+					<Button
+						variant="secondary"
+						onClick={onClose}
+						disabled={loading}
+						className="flex-1"
+					>
+						Cancelar
+					</Button>
+					<CreateButton
+						type="submit"
+						text="Crear canal"
+						isLoading={loading}
+						disabled={!formState[CREATE_CHANNEL_FIELDS.NAME].trim()}
+						className="flex-1"
+					/>
+				</div>
+			</form>
+		</BaseModal>
 	)
 }
 

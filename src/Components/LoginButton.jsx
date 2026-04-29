@@ -1,8 +1,16 @@
 import React from 'react'
+import Button from './Button'
 
-const LoginButton = ({ type, text, ariaLabel, disabled, className }) => {
+const LoginButton = ({ type, text, ariaLabel, disabled, className, isLoading }) => {
 	return (
-		<button type={type} className={className} aria-label={ariaLabel} >{text}</button>
+		<Button 
+			type={type} 
+			text={text} 
+			ariaLabel={ariaLabel} 
+			disabled={disabled} 
+			className={className} 
+			isLoading={isLoading}
+		/>
 	)
 }
 

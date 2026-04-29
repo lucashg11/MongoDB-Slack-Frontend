@@ -128,10 +128,10 @@ const RegisterScreen = () => {
 						</div>
 						<RegisterButton
 							type="submit"
-							text={loading ? "Registrando..." : "Registrarse"}
-							disabled={loading}
+							text="Registrarse"
+							isLoading={loading}
 							ariaLabel="Boton para registrarse"
-							className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+							className="w-full"
 						/>
 						{error && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{error?.message || 'Ocurrió un error al registrarse'}</span>}
 						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{response.message || 'Error al registrar usuario'}</span>}

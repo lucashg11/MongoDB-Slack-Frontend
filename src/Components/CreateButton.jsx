@@ -1,8 +1,17 @@
 import React from 'react'
+import Button from './Button'
 
-const CreateButton = ({ type, text, disabled, ariaLabel, className, onClick }) => {
+const CreateButton = ({ type, text, disabled, ariaLabel, className, onClick, isLoading }) => {
 	return (
-		<button type={type} className={className} disabled={disabled} aria-label={ariaLabel} onClick={onClick}>{text}</button>
+		<Button 
+			type={type} 
+			text={text} 
+			ariaLabel={ariaLabel} 
+			disabled={disabled} 
+			className={className} 
+			onClick={onClick}
+			isLoading={isLoading}
+		/>
 	)
 }
 

@@ -103,10 +103,10 @@ const CreateWorkspaceScreen = () => {
 						</div>
 						<CreateButton
 							type="submit"
-							text={loading ? "Creando..." : "Crear espacio"}
-							disabled={loading}
+							text="Crear espacio"
+							isLoading={loading}
 							ariaLabel="Boton para crear un espacio de trabajo"
-							className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+							className="w-full"
 						/>
 						{error && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{error?.message || 'Ocurrió un error al crear el espacio de trabajo'}</span>}
 						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{response.message || 'Error al crear el espacio de trabajo'}</span>}

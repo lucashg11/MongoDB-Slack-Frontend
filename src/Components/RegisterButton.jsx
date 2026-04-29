@@ -1,8 +1,16 @@
 import React from 'react'
+import Button from './Button'
 
-const RegisterButton = ({ type, text, disabled, ariaLabel, className }) => {
+const RegisterButton = ({ type, text, disabled, ariaLabel, className, isLoading }) => {
 	return (
-		<button type={type} className={className} disabled={disabled} aria-label={ariaLabel}>{text}</button>
+		<Button 
+			type={type} 
+			text={text} 
+			ariaLabel={ariaLabel} 
+			disabled={disabled} 
+			className={className} 
+			isLoading={isLoading}
+		/>
 	)
 }
 

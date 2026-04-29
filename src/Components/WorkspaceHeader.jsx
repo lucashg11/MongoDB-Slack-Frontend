@@ -3,6 +3,7 @@ import { WorkspaceContext } from '../Context/WorkspaceContext'
 import useCurrentMember from '../hooks/useCurrentMember'
 import { HiUserPlus, HiBars3 } from 'react-icons/hi2'
 import { useOutletContext } from 'react-router'
+import Button from './Button'
 
 const WorkspaceHeader = ({ onOpenInviteModal }) => {
 	const { workspace, members } = useContext(WorkspaceContext)
@@ -14,13 +15,15 @@ const WorkspaceHeader = ({ onOpenInviteModal }) => {
 			<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 				<div className="flex flex-col md:flex-row md:items-center gap-4 flex-1">
 					<div className="flex items-center gap-3 flex-1">
-						<button
+						<Button
+							variant="secondary"
+							size="sm"
 							onClick={() => setIsSidebarOpen?.(true)}
-							className="md:hidden flex items-center justify-center p-2 rounded-lg bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 transition-all active:scale-95 shadow-sm"
-							aria-label="Abrir menú"
+							className="md:hidden p-2 shadow-none"
+							ariaLabel="Abrir menú"
 						>
 							<HiBars3 className="w-6 h-6 stroke-2" />
-						</button>
+						</Button>
 						<div className="min-w-0">
 							<h1 className="text-lg md:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
 								{workspace?.title}
@@ -64,12 +67,14 @@ const WorkspaceHeader = ({ onOpenInviteModal }) => {
 						</span>
 					</div>
 					{canInvite && (
-						<button
+						<Button
 							onClick={onOpenInviteModal}
-							className="flex w-fit items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all  md:w-auto"
-							title='Invitar a Workspace'>
+							size="sm"
+							className="px-4"
+							ariaLabel="Invitar a Workspace"
+						>
 							<HiUserPlus className="w-6 h-6" />
-						</button>
+						</Button>
 					)}
 				</div>
 			</div>

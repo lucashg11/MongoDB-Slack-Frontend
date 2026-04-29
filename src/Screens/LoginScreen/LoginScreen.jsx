@@ -134,8 +134,9 @@ const LoginScreen = () => {
 						<LoginButton
 							type="submit"
 							text="Iniciar sesion"
+							isLoading={loading}
 							ariaLabel="Boton para iniciar sesion"
-							className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95"
+							className="w-full"
 						/>
 					</form>
 					<div className='flex flex-col gap-3 text-sm'>
