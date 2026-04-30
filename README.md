@@ -1,19 +1,44 @@
-# React + Vite
+# MongoDB Slack - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el frontend para la aplicación de clon de Slack, construida con React, Vite y Tailwind CSS.
 
-Currently, two official plugins are available:
+## 🚀 Despliegue
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Puedes encontrar la aplicación desplegada en:
+[mongo-slack-frontend.vercel.app](https://mongo-slack-frontend.vercel.app/)
 
-## React Compiler
+## 🛠️ Instalación
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Sigue estos pasos para configurar el proyecto localmente:
 
-## Expanding the ESLint configuration
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/lucashg11/MongoDB-Slack-Frontend
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. **Instalar dependencias:**
+   ```bash
+   npm install
+   ```
 
+3. **Iniciar el servidor de desarrollo:**
+   ```bash
+   npm run dev
+   ```
 
-mati.dev.gimenez@gmail.com
+4. **Construir para producción:**
+   ```bash
+   npm run build
+   ```
+
+## 🔑 Credenciales de Prueba
+
+Para probar la aplicación, puedes usar las siguientes cuentas:
+
+**Owner:**
+- **Email:** `test.backend.dwfs@gmail.com`
+- **Password:** `owner1234`
+
+**Admin:**
+- **Email:** `test2.backend.dwfs@gmail.com`
+- **Password:** `admin1234`
