@@ -79,21 +79,6 @@ const LoginScreen = () => {
 						Iniciar sesion
 					</h1>
 
-					{
-						(response && !response.ok) && (
-							<div className="bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-lg mb-6 text-sm transition-all duration-300" role="alert">
-								<span className="block sm:inline">{response.payload?.detail || response.message || response.error || 'Credenciales incorrectas o problema de inicio de sesión.'}</span>
-							</div>
-						)
-					}
-					{
-						error && (
-							<div className="bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-lg mb-6 text-sm transition-all duration-300" role="alert">
-								<strong className="font-bold">Error: </strong>
-								<span className="block sm:inline">{error.message || 'No se pudo conectar al servidor.'}</span>
-							</div>
-						)
-					}
 
 					<form onSubmit={onSubmit} className='w-full flex flex-col gap-6 mb-8'>
 						<div className='flex flex-col gap-2'>
@@ -126,6 +111,22 @@ const LoginScreen = () => {
 								)}
 							</button>
 						</div>
+						{
+							(response && !response.ok) && (
+								<div className="bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-lg mb-6 text-sm transition-all duration-300" role="alert">
+									<span className="block sm:inline">{response.payload?.detail || response.message || response.error || 'Credenciales incorrectas o problema de inicio de sesión.'}</span>
+								</div>
+							)
+						}
+						{
+							error && (
+								<div className="bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-lg mb-6 text-sm transition-all duration-300" role="alert">
+									<strong className="font-bold">Error: </strong>
+									<span className="block sm:inline">{error.message || 'No se pudo conectar al servidor.'}</span>
+								</div>
+							)
+						}
+
 						<LoginButton
 							type="submit"
 							text="Iniciar sesion"
