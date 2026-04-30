@@ -96,9 +96,6 @@ const InviteToChannelModal = ({ workspace_id, channel, isOpen, onClose, onMember
 
                 {inviteError && (
                     <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm mb-6 animate-in shake-x duration-500">
-                        <p className="font-bold flex items-center gap-2">
-                            <span>⚠</span> Error
-                        </p>
                         <p>{inviteError.message || 'Error al invitar al miembro'}</p>
                     </div>
                 )}

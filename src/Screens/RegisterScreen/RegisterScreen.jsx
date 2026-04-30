@@ -61,7 +61,12 @@ const RegisterScreen = () => {
 	useEffect(
 		() => {
 			if (response && response.ok) {
-				navigate('/login')
+				setTimeout(
+					() => {
+						navigate('/login')
+					},
+					3000
+				)
 			}
 		},
 		[response]
@@ -121,6 +126,9 @@ const RegisterScreen = () => {
 								)}
 							</button>
 						</div>
+						{error && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{error?.message || 'Ocurrió un error al registrarse'}</span>}
+						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{response.message || 'Error al registrar usuario'}</span>}
+						{response && response.ok && <span className='text-green-500 text-sm font-semibold text-center transition-all duration-300'>Te has registrado exitosamente, te enviamos un mail con instrucciones.</span>}
 						<RegisterButton
 							type="submit"
 							text="Registrarse"
@@ -128,9 +136,7 @@ const RegisterScreen = () => {
 							ariaLabel="Boton para registrarse"
 							className="w-full"
 						/>
-						{error && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{error?.message || 'Ocurrió un error al registrarse'}</span>}
-						{response && !response.ok && <span className='text-red-500 text-sm font-semibold text-center transition-all duration-300'>{response.message || 'Error al registrar usuario'}</span>}
-						{response && response.ok && <span className='text-green-500 text-sm font-semibold text-center transition-all duration-300'>Te has registrado exitosamente, te enviamos un mail con instrucciones.</span>}
+
 					</form>
 					<span className='text-sm text-slate-600 inline-flex items-center gap-2'>Ya tienes una cuenta? <Link className='font-bold text-indigo-500 hover:text-indigo-600 transition-colors duration-200' to="/login">Iniciar sesion</Link></span>
 				</div>

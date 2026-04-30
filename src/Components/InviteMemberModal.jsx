@@ -84,18 +84,12 @@ const InviteMemberModal = ({ workspace_id, isOpen, onClose, onMemberInvited }) =
 
 				{(error || (response && !response.ok)) && (
 					<div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm animate-in shake-x duration-500">
-						<p className="font-bold flex items-center gap-2">
-							<span>⚠</span> Error
-						</p>
 						<p>{error?.message || response?.message || 'Error al procesar la invitación'}</p>
 					</div>
 				)}
 
 				{response && response.ok && (
 					<div className="bg-emerald-50 border border-emerald-100 text-emerald-600 px-4 py-3 rounded-xl text-sm animate-in slide-in-from-top-2 duration-300">
-						<p className="font-bold flex items-center gap-2">
-							<span>✓</span> ¡Éxito!
-						</p>
 						<p>{response.message || 'Invitación enviada correctamente'}</p>
 					</div>
 				)}
