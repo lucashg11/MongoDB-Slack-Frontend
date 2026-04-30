@@ -22,13 +22,13 @@ const ResetPasswordRequestScreen = () => {
 		[FORM_FIELDS.EMAIL]: ''
 	}
 
-	function submitResetPasswordRequest() {
+	function submitResetPasswordRequest(form_data) {
 		sendRequest(
 			{
 				requestCb: async () => {
 					return await resetPasswordRequest(
 						{
-							email: formState[FORM_FIELDS.EMAIL]
+							email: form_data[FORM_FIELDS.EMAIL]
 						}
 					)
 				}
@@ -77,9 +77,10 @@ const ResetPasswordRequestScreen = () => {
 										/>
 									</div>
 									<RegisterButton 
-										className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50" 
-										text={loading ? 'Cargando...' : 'Enviar solicitud'} 
-										disabled={loading} 
+										type="submit"
+										className="w-full" 
+										text="Enviar solicitud" 
+										isLoading={loading} 
 									/>
 								</form>
 								<div className='flex flex-col gap-3 mt-2'>

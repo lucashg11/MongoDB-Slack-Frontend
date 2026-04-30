@@ -25,13 +25,13 @@ const ResetPasswordScreen = () => {
 		[FORM_FIELDS.PASSWORD]: ''
 	}
 
-	function submitResetPassword() {
+	function submitResetPassword(form_data) {
 		sendRequest(
 			{
 				requestCb: async () => {
 					return await resetPassword(
 						{
-							password: formState[FORM_FIELDS.PASSWORD],
+							password: form_data[FORM_FIELDS.PASSWORD],
 							reset_password_token: reset_password_token
 						}
 					)
@@ -97,9 +97,10 @@ const ResetPasswordScreen = () => {
 								/>
 							</div>
 							<RegisterButton 
-								className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50" 
-								text={loading ? 'Cargando...' : 'Restablecer contraseña'} 
-								disabled={loading} 
+								type="submit"
+								className="w-full" 
+								text="Restablecer contraseña" 
+								isLoading={loading} 
 							/>
 						</form>
 					</div>
